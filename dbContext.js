@@ -19,6 +19,8 @@ export default function DBcreateContextProvider(props){
                 const setupDatabase = async () => {
                     try {
                         // await FileSystem.deleteAsync(FileSystem.documentDirectory + 'SQLite/ExpDB.db');
+                        // await db.execAsync('ALTER TABLE ExpenseT ADD COLUMN photo TEXT');
+
 
                         const database = await SQLite.openDatabaseAsync('ExpDB.db');
                         setDb(database);
@@ -29,10 +31,11 @@ export default function DBcreateContextProvider(props){
                         CREATE TABLE IF NOT EXISTS ExpenseT (
                             id INTEGER PRIMARY KEY AUTOINCREMENT,
                             refnum TEXT,
-                            amount TEXT,
+                            amount REAL,
                             category TEXT,
                             notes TEXT,
-                            date DATETIME
+                            date DATETIME,
+                            photo TEXT
                         );
                         `);
                         console.log('Database and table initialized');
@@ -62,9 +65,7 @@ export default function DBcreateContextProvider(props){
                 } catch (error) {
                 console.error('Error fetching tasks:', error);
                 }
-
                 // return result;
-
             };
 
 
@@ -73,7 +74,7 @@ export default function DBcreateContextProvider(props){
                 if (!db) return;
 
                 try {
-                    await db.runAsync('INSERT INTO ExpenseT (refnum, amount, category, notes, date) VALUES (?, ?, ?, ?, ?) ', newExpense.id, newExpense.amount, newExpense.category, newExpense.note, newExpense.date);  
+                    await db.runAsync('INSERT INTO ExpenseT (refnum, amount, category, notes, date, photo) VALUES (?, ?, ?, ?, ?, ?) ', newExpense.id, newExpense.amount, newExpense.category, newExpense.note, newExpense.date, newExpense.photo);  
                     console.log('Record Addded');
                     // setNewExpenses(newExpense);
                     // setContextState(newExpense);

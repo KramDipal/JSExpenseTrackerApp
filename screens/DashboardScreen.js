@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, FlatList, StyleSheet, ImageBackground } from 'react-native';
+import { View, Text, FlatList, StyleSheet, ImageBackground,Image } from 'react-native';
 
 import { useContext } from 'react';
 
@@ -24,7 +24,9 @@ export default function DashboardScreen({ expenses }) {
         data={newExpenses}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
-          <Text>{`${item.id} | ${item.date} | Php ${item.amount} | ${item.category}`}</Text>
+          <Text>{`${item.id} | ${item.date} | Php ${item.amount} | ${item.category} | ${item.notes}`}
+          {item.photo && <Image source={{ uri: item.photo }} style={{ width: 100, height: 100 }} />}
+          </Text>
         )}
       />
     </View>
