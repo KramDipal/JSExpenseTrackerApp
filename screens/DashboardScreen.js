@@ -4,7 +4,7 @@ import { View, Text, FlatList, StyleSheet, ImageBackground,Image } from 'react-n
 import { useContext } from 'react';
 
 import { DBContextStore } from '../dbContext';
-
+import { LinearGradient } from 'expo-linear-gradient';
 export default function DashboardScreen({ expenses }) {
 //   const totalSpending = expenses.reduce((sum, exp) => sum + exp.amount, 0);
   const dbcontextStore = useContext(DBContextStore);
@@ -16,6 +16,10 @@ export default function DashboardScreen({ expenses }) {
 // console.log('DashboardScreen ' + JSON.stringify(newExpenses));
 
   return (
+    <LinearGradient
+    colors={['#0288D1', '#4FC3F7']} // Blue gradient for Dashboard
+    style={styles.gradient}
+    >
     <View style={styles.container}>
       <Text style={styles.total}>Total Spending: Php {totalSpending.toFixed(2)}</Text>
       <Text style={styles.header}>Recent Expenses</Text>
@@ -30,10 +34,12 @@ export default function DashboardScreen({ expenses }) {
         )}
       />
     </View>
+    </LinearGradient>
   );
 }
 
 const styles = StyleSheet.create({
+gradient: { flex: 1 },
   container: { flex: 1, padding: 20 },
   total: { fontSize: 24, fontWeight: 'bold', marginBottom: 20 },
   header: { fontSize: 18, marginBottom: 10 },

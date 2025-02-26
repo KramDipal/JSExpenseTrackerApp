@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { View, Text, FlatList, Button, StyleSheet } from 'react-native';
 import { DBContextStore } from '../dbContext';
-
+import { LinearGradient } from 'expo-linear-gradient';
 
 export default function FilterScreen({ expenses }) {
   const [selectedCategory, setSelectedCategory] = useState(null);
@@ -14,6 +14,10 @@ export default function FilterScreen({ expenses }) {
 
 
   return (
+    <LinearGradient
+    colors={['#FF5722', '#FF8A65']} // Orange gradient for Filters
+    style={styles.gradient}
+    >
     <View style={styles.container}>
       <Text style={styles.header}>Filter by Category</Text>
       <FlatList
@@ -40,10 +44,12 @@ export default function FilterScreen({ expenses }) {
         color={timeFilter === 'Monthly' ? 'blue' : 'gray'}
       />
     </View>
+    </LinearGradient>
   );
 }
 
 const styles = StyleSheet.create({
+  gradient: { flex: 1 },
   container: { flex: 1, padding: 20 },
   header: { fontSize: 18, marginVertical: 10 },
   item: { padding: 10, borderBottomWidth: 1 },

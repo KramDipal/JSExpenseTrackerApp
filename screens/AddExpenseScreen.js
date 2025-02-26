@@ -10,7 +10,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { DBContextStore } from '../dbContext';
 import { Camera, CameraView } from 'expo-camera';
 import { Ionicons } from '@expo/vector-icons'; // For camera icon
-
+import { LinearGradient } from 'expo-linear-gradient';
 // import CameraScreenComp from './CameraScreen';
 
 export default function AddExpenseScreen({ setExpenses, expenses }) {
@@ -82,6 +82,10 @@ export default function AddExpenseScreen({ setExpenses, expenses }) {
   }
 
   return (
+    <LinearGradient
+    colors={['#4CAF50', '#81C784']} // Green gradient for Add Expense
+    style={styles.gradient}
+    >
     <View style={styles.container}>
       {cameraVisible ? (
         <CameraView 
@@ -128,7 +132,8 @@ export default function AddExpenseScreen({ setExpenses, expenses }) {
             value={note}
             onChangeText={setNote}
           />
-          {photoUri && <Text style={styles.photoText}>Photo captured: {photoUri}</Text>}
+          {photoUri && 
+            <Text style={styles.photoText}>Photo captured: {photoUri}</Text>}
           <TouchableOpacity
             style={styles.cameraIcon}
             onPress={() => setCameraVisible(true)}
@@ -140,6 +145,7 @@ export default function AddExpenseScreen({ setExpenses, expenses }) {
         </>
       )}
     </View>
+    </LinearGradient>
   );
 }
 
@@ -147,7 +153,7 @@ export default function AddExpenseScreen({ setExpenses, expenses }) {
 const styles = StyleSheet.create({
     container: { flex: 1, padding: 10 },
     input: { borderWidth: 1, padding: 10, marginVertical: 10, borderRadius: 5 },
-    
+    gradient: { flex: 1 },
     picker: {
         // height: 50,
         borderWidth: 1,
@@ -207,7 +213,7 @@ const styles = StyleSheet.create({
         padding: 15,
       },
       cameraText: { color: 'black', marginLeft: 10, fontSize: 16 },
-      photoText: { color: '#333', marginVertical: 10 },
+      photoText: { color: '#333', marginVertical: 10, fontWeight: 'bold',},
       cancelButton: { marginTop: 10 },
       cancelText: { color: '#fff', fontSize: 16 },
       cameraIcon: {
