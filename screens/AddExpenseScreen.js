@@ -1,5 +1,5 @@
 import React, { useContext, useState, useRef, useEffect } from 'react';
-import { View, TextInput, Button, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { View, TextInput, Button, StyleSheet, Text, TouchableOpacity, Alert } from 'react-native';
 // import RNPickerSelect from 'react-native-picker-select';
 import {Picker} from '@react-native-picker/picker';
 import 'react-native-get-random-values';
@@ -52,7 +52,17 @@ export default function AddExpenseScreen({ setExpenses, expenses }) {
     };
 
   const addExpense = () => {
-    if (!amount || !category) return;
+    if (!amount){
+      Alert.alert('Please enter amount');
+      return;
+    }  
+      
+    if(!category){
+      Alert.alert('Please select a category');
+      return;
+    }
+
+    
     const newExpense = {
       id: `EXP-${uuidv4().slice(0, 8)}`, // e.g., EXP-12345678
       date: new Date().toISOString().split('T')[0], // YYYY-MM-DD
@@ -83,7 +93,7 @@ export default function AddExpenseScreen({ setExpenses, expenses }) {
 
   return (
     <LinearGradient
-    colors={['#4CAF50', '#81C784']} // Green gradient for Add Expense
+    colors={['#0288D1', '#FFFDE4']} // Green gradient for Add Expense
     style={styles.gradient}
     >
     <View style={styles.container}>
@@ -114,15 +124,16 @@ export default function AddExpenseScreen({ setExpenses, expenses }) {
             value={amount}
             onChangeText={setAmount}
           />
+          
           <Picker
-            style={styles.picker}
+            // style={styles.picker}
             selectedValue={category}
             onValueChange={(itemValue) => setCategory(itemValue)}
             itemStyle={styles.itemStyle}
           >
-            {/* <Picker.Item label="Select Category" value={null} /> */}
+            <Picker.Item label="Select Category" value={''} />
             <Picker.Item label="Food" value="Food" />
-            <Picker.Item label="Transport" value="Transport" />
+            <Picker.Item label="Transportation" value="Transport" />
             <Picker.Item label="Entertainment" value="Entertainment" />
             <Picker.Item label="Bills" value="Bills" />
           </Picker>
@@ -152,15 +163,15 @@ export default function AddExpenseScreen({ setExpenses, expenses }) {
 
 const styles = StyleSheet.create({
     container: { flex: 1, padding: 10 },
-    input: { borderWidth: 1, padding: 10, marginVertical: 10, borderRadius: 5 },
+    input: { borderWidth: 1, padding: 10, marginVertical: 10, borderRadius: 5, fontWeight: 'bold' },
     gradient: { flex: 1 },
     picker: {
         // height: 50,
         borderWidth: 1,
         borderColor: 'gray',
         borderRadius: 10,
-        marginVertical: 10,
-        backgroundColor: '#97B5DE',
+        marginVertical: 5,
+        backgroundColor: '#FFFDE4',
         shadowColor: '#e1bb3e',
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.2,
@@ -168,9 +179,9 @@ const styles = StyleSheet.create({
         elevation: 10,
       },
       itemStyle: {
-        fontSize: 20,
+        fontSize: 30,
         fontWeight: 'bold',
-        color: '#424242',
+        color: '#FFFDE4',
       },
       message: {
         textAlign: 'center',

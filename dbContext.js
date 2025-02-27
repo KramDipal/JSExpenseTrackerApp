@@ -8,6 +8,7 @@ export const DBContextStore = createContext();
 export default function DBcreateContextProvider(props){
         const [db, setDb] = useState(null);    
         const [newExpenses, setNewExpenses] = useState([]);
+        const [newExpenses2, setNewExpenses2] = useState([]);
         const [budgetGoal, setBudgetGoal] = useState(null); // New state for budget
     
         // const setContextState = (newExpense) => {
@@ -51,6 +52,7 @@ export default function DBcreateContextProvider(props){
                         console.log('Database and table initialized');
                         fetchTasks(database);
                         fetchBudget(database); // Fetch initial budget
+                        // fetchByRecord(database);
 
                     } catch (error) {
                         console.error('Error initializing database:', error);
@@ -78,6 +80,26 @@ export default function DBcreateContextProvider(props){
                 console.error('Error fetching tasks:', error);
                 }
                 // return result;
+            };
+
+
+            // Fetch records by search term (e.g., category)
+            const fetchByRecord = async (database = db, search = '') => {
+                if (!database) return;
+
+                console.log('fetchByRecord search:', search);
+                try {
+                    const query = 'SELECT * FROM ExpenseT WHERE category LIKE ? OR notes LIKE ? OR refnum LIKE ? OR date LIKE ?';
+                    const result = await database.getAllAsync(query, [`%${search}%`, `%${search}%`, `%${search}%`, `%${search}%`]);
+                // const query = 'SELECT * FROM ExpenseT WHERE category LIKE ?';
+                // const result = await database.getAllAsync(query, [`%${search}%`]); // Use LIKE for 
+                // partial matches
+                setNewExpenses2(result);
+                console.log('fetchByRecord result:', JSON.stringify(result, null, 2));
+                return result; // Return result for use in SearchScreen if needed
+                } catch (error) {
+                console.error('Error fetching fetchByRecord:', error);
+                }
             };
 
             const fetchBudget = async (database = db) => {
@@ -121,7 +143,7 @@ export default function DBcreateContextProvider(props){
                 console.error('Error saving budget:', error);
                 }
             };
-            console.log('newExpenses ' + JSON.stringify(newExpenses));
+            // console.log('newExpenses ' + JSON.stringify(newExpenses));
 
     return(
         <DBContextStore.Provider value={{
@@ -129,7 +151,9 @@ export default function DBcreateContextProvider(props){
             handleSaveTask,
             newExpenses,
             fetchTasks,
+            newExpenses2,
             budgetGoal,
+            fetchByRecord,
             handleSaveBudget,
             // setupDatabase,
         }}>

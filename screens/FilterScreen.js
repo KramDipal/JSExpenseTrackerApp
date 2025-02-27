@@ -15,7 +15,8 @@ export default function FilterScreen({ expenses }) {
 
   return (
     <LinearGradient
-    colors={['#FF5722', '#FF8A65']} // Orange gradient for Filters
+    // colors={['#FF5722', '#FF8A65']} // Orange gradient for Filters
+    colors={['#0288D1', '#FFFDE4']}
     style={styles.gradient}
     >
     <View style={styles.container}>

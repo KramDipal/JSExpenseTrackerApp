@@ -4,6 +4,8 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import DashboardScreen from './screens/DashboardScreen';
 import AddExpenseScreen from './screens/AddExpenseScreen';
 import FilterScreen from './screens/FilterScreen';
+import ChartsScreen from './screens/ChartsScreen';
+import SearchScreen from './screens/SearchScreen';
 
 import { Ionicons } from '@expo/vector-icons'
 // import { LinearGradient } from 'expo-linear-gradient';
@@ -39,6 +41,7 @@ export default function App() {
                 )}}>
           {() => <AddExpenseScreen setExpenses={setExpenses} expenses={expenses} />}
         </Tab.Screen>
+
         <Tab.Screen name="Filters"
                 options={{
                   tabBarIcon: ({color,size})=> (
@@ -46,6 +49,23 @@ export default function App() {
                 )}}>
           {() => <FilterScreen expenses={expenses} />}
         </Tab.Screen>
+
+        <Tab.Screen name="Board"
+                options={{
+                  tabBarIcon: ({color,size})=> (
+                  <Ionicons name="trending-up" color={color} size={size}/>
+                )}}>
+          {() => <ChartsScreen expenses={expenses} />}
+        </Tab.Screen>
+
+        <Tab.Screen name="Search"
+                options={{
+                  tabBarIcon: ({color,size})=> (
+                  <Ionicons name="search" color={color} size={size}/>
+                )}}>
+          {() => <SearchScreen expenses={expenses} />}
+        </Tab.Screen>
+
       </Tab.Navigator>
     </NavigationContainer>   
     </DBcreateContextProvider>
