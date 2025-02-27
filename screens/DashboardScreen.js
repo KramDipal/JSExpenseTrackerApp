@@ -1,19 +1,25 @@
 import React from 'react';
-import { View, Text, FlatList, StyleSheet, ImageBackground,Image, TextInput, Button } from 'react-native';
+import { View, Text, FlatList, StyleSheet, ImageBackground,Image, TextInput, Button, TouchableOpacity, Modal, Alert, Dimensions } from 'react-native';
 
 import { useContext, useState } from 'react';
 
 import { DBContextStore } from '../dbContext';
 import { LinearGradient } from 'expo-linear-gradient';
+
+
+const screenWidth = Dimensions.get('window').width;
 export default function DashboardScreen({ expenses }) {
 //   const totalSpending = expenses.reduce((sum, exp) => sum + exp.amount, 0);
   const dbcontextStore = useContext(DBContextStore);
-
   const  { newExpenses, budgetGoal, handleSaveBudget }  = useContext(DBContextStore);
   const [budgetInput, setBudgetInput] = useState('');
   // Calculate total from newExpenses instead of props.expenses
   const totalSpending = newExpenses.reduce((sum, exp) => sum + parseFloat(exp.amount), 0);
   const budgetProgress = budgetGoal ? (totalSpending / budgetGoal) * 100 : 0;
+
+  //image blow up
+  const [ modalVisible, setModalVisible ] = useState(false);
+  const [ selectedImage, setSelectedImage ] = useState(null);
 
   console.log('DashboardScreen newExpenses ' + JSON.stringify(newExpenses));
 
@@ -25,6 +31,16 @@ export default function DashboardScreen({ expenses }) {
       setBudgetInput('');
     }
   };
+
+  const handleImagePress = (index, photo) => {
+    // Alert.alert('Image Pressed', `You clicked on image #${index + 1}`);
+
+    // Alert.alert('Image Pressed ' + index + photo);
+    setSelectedImage(photo);    
+    setModalVisible(true);
+    // You can replace this with any action, e.g., navigation or custom logic
+  };
+
 
 
   return (
@@ -58,16 +74,32 @@ export default function DashboardScreen({ expenses }) {
           keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => (
             <>
-        <Text>{`${item.refnum} | ${item.date} | Php ${item.amount} | ${item.category} | ${item.notes}`}
+            <Text>{`${item.refnum} | ${item.date} | Php ${item.amount} | ${item.category} | ${item.notes}`}
             </Text>
+
+            <TouchableOpacity
+              key={item.id}
+              onPress={()=>handleImagePress(item.id, item.photo)}
+            >
             <Text>
                 {item.photo && <Image source={{ uri: item.photo }} style={{ width: 100, height: 100 }} />}
             </Text>
-            </>
-
-            
+            </TouchableOpacity>
+            </>   
           )}
         />
+
+        <Modal visible={modalVisible} transparent onRequestClose={() => setModalVisible(false)}>
+          <View style={styles.modalOverlay}>
+
+            <TouchableOpacity onPress={() => setModalVisible(false)} style={styles.modalClose}>
+              <Text style={styles.closeText}>Close</Text>
+            </TouchableOpacity>
+
+          <Image source={{uri: selectedImage}} style={styles.fullImage} />
+          </View>
+        </Modal>
+
       </View>
     </LinearGradient>
   );
@@ -92,5 +124,25 @@ progress: { fontSize: 16, color: '#FF5252', marginBottom: 10 },
     color: '#333',
   },
   header: { fontSize: 18, marginBottom: 10 },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalClose: {
+    position: 'absolute',
+    top: 150,
+    right: 20,
+  },
+  fullImage: {
+    width: screenWidth * 0.9,
+    height: screenWidth * 0.9 * (100 / 100), // Maintain aspect ratio
+    borderRadius: 10,
+  },
+  closeText: {
+    color: '#fff',
+    fontSize: 18,
+  },
 //   listItem: { color: 'black', paddingVertical: 5 },
 });

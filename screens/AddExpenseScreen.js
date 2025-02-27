@@ -120,7 +120,7 @@ export default function AddExpenseScreen({ setExpenses, expenses }) {
             onValueChange={(itemValue) => setCategory(itemValue)}
             itemStyle={styles.itemStyle}
           >
-            <Picker.Item label="Select Category" value={null} />
+            {/* <Picker.Item label="Select Category" value={null} /> */}
             <Picker.Item label="Food" value="Food" />
             <Picker.Item label="Transport" value="Transport" />
             <Picker.Item label="Entertainment" value="Entertainment" />
