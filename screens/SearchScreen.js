@@ -31,7 +31,7 @@ export default function SearchScreen(){
 
       };
 
-          //  load on mount
+      //  load on mount or in every Textinput onChange event
       useEffect(() => {
         handleSearchEvent(searchQuery);
       }, [searchQuery]);
@@ -58,7 +58,7 @@ export default function SearchScreen(){
                         value={searchQuery}
                         onChangeText={setSearchQuery}
                         placeholder="Enter a value"
-                        style={{ backgroundColor:'#DDDDDD', width:'95%', margin:10, borderRadius:5 }}
+                        style={{ backgroundColor:'#DDDDDD', width:'95%',height:45, margin:10, borderRadius:5, paddingLeft:10 }}
                     />
                     {/* <Pressable
                         onPress={handleSearchEvent}           
@@ -98,7 +98,7 @@ export default function SearchScreen(){
               <Text style={styles.closeText}>Close</Text>              
             </TouchableOpacity>
             {selectedImage ? <Image source={{uri: selectedImage}} style={styles.fullImage} />
-            : <Text style={{fontWeight:'bold', fontSize:30, marginTop:50, color:'white'}}>Image not available</Text>}
+            : <Text style={{fontWeight:'bold', fontSize:20, marginTop:50, color:'white'}}>Image not available</Text>}
             
           </View>
         </Modal>
@@ -148,7 +148,7 @@ const styles = StyleSheet.create({
         paddingVertical:5,
         borderBottomColor:AppStyle.gunMetal,
         borderBottomWidth:2,
-        flexDirection:'row',
+        // flexDirection:'row',
     },
     button:{        
         alignItems: 'center',

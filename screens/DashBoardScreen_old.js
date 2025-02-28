@@ -15,12 +15,8 @@ import {
 
 import { Ionicons } from '@expo/vector-icons'; // For camera icon
 
-import { Video } from 'expo-av';
-
 const screenWidth = Dimensions.get('window').width;
 export default function DashboardScreen({ expenses }) {
-
-  const videoRef = useRef(null);
 //   const totalSpending = expenses.reduce((sum, exp) => sum + exp.amount, 0);
   const dbcontextStore = useContext(DBContextStore);
   const  { newExpenses, budgetGoal, handleSaveBudget }  = useContext(DBContextStore);
@@ -36,16 +32,11 @@ export default function DashboardScreen({ expenses }) {
   const [ modalVisible, setModalVisible ] = useState(false);
   const [ selectedImage, setSelectedImage ] = useState(null);
 
-  const [ modalVisibleArticles, setModalVisibleArticles ] = useState(false);
-  const [ selectedImageArticles, setSelectedImageArticles ] = useState(null);
   //dashboard
   const [ modalVisibleChart, setModalVisibleChart ] = useState(false);
   const imageWidth = screenWidth * 0.3;
   const [ currentIndex, setCurrentIndex ] = useState(0);
   const [ autoScroll, setAutoScroll]  = useState(true);
-
-  //select video to play
-  const [ imagePressedIndex, setImagePressedIndex ] = useState(0);
   // const [ modalVisibleBarChart, setModalVisibleBarChart ] = useState(false);
 
   // const [selectRecordCounts, setSelectRecordCounts] = useState(
@@ -54,28 +45,15 @@ export default function DashboardScreen({ expenses }) {
 
   const [images] = useState([
     require('../assets/insurance/bdoi.png'),
-    require('../assets/insurance/sunlife.png'),
     require('../assets/insurance/pioneer.png'),
     require('../assets/insurance/prudential.jpg'),
     require('../assets/insurance/prulife.jpg'),
     require('../assets/insurance/standard.png'),
+    require('../assets/insurance/sunlife.png'),
     require('../assets/insurance/oona.png'),
     require('../assets/insurance/philbrit.png'),
-  ]);
 
-  const [articles] = useState([
-    require('../assets/savings/bank.jpg'),
-    require('../assets/savings/hdmf.jpg'),
-    require('../assets/savings/stocks.png'),    
-    require('../assets/savings/sss.png'),  
-    require('../assets/savings/ph.jpg'),  
   ]);
-
-  const [videoMap] = useState([    
-    require('../assets/videos/BDOLifeVid.mp4'),
-    require('../assets/videos/SunLifeVid.mp4'),
-  ]);
-
 
   useEffect(() => {
     if (!autoScroll) return;
@@ -106,13 +84,13 @@ export default function DashboardScreen({ expenses }) {
     }
   };
 
-  // const handleImagePress = (photo) => {
-  //   // Alert.alert('Image Pressed', `You clicked on image #${index + 1}`);
-  //   // Alert.alert('Image Pressed ' + index + photo);
-  //   setSelectedImage(photo);    
-  //   setModalVisible(true);
-  //   // You can replace this with any action, e.g., navigation or custom logic
-  // };
+  const handleImagePress = (photo) => {
+    // Alert.alert('Image Pressed', `You clicked on image #${index + 1}`);
+    // Alert.alert('Image Pressed ' + index + photo);
+    setSelectedImage(photo);    
+    setModalVisible(true);
+    // You can replace this with any action, e.g., navigation or custom logic
+  };
 
   // Step 1: Group by category and count occurrences
   const categoryCount = newExpenses.reduce((occurrences, item) => {
@@ -132,27 +110,14 @@ export default function DashboardScreen({ expenses }) {
 
     // console.log('pieData ' + pieData);
 
-  // const handleChart = () => {
+  const handleChart = () => {
 
-  //   console.log('handleChart');
-  //   setModalVisibleChart(true);
+    console.log('handleChart');
+    setModalVisibleChart(true);
 
-  // }
+  }
 
-  const handleImagePress = (index) => {
-    // Alert.alert('Image Pressed', `You clicked on image #${index + 1}`);
-    setSelectedImage(images[index]);
-    setModalVisible(true);
-    setImagePressedIndex(index); // for video selection
-    // You can replace this with any action, e.g., navigation or custom logic
-  };
 
-  const handleImagePressArticles = (index) => {
-    // Alert.alert('Image Pressed', `You clicked on image #${index + 1}`);
-    setSelectedImageArticles(articles[index]);
-    setModalVisibleArticles(true);
-    // You can replace this with any action, e.g., navigation or custom logic
-  };
 
   return (
     <LinearGradient 
@@ -160,18 +125,20 @@ export default function DashboardScreen({ expenses }) {
       colors={['#0288D1', '#FFFDE4']}
       style={styles.gradient}>
 
-        <View style={{marginTop:15, marginBottom:20, position:'absolute', right: 20,}}>
-          <TouchableOpacity
-            onPress={()=>Alert.alert('Pressed!')}
-          >
-          <Text style={{fontSize:15, fontWeight:'bold'}}>My Account</Text>
-          </TouchableOpacity>
+      {/* <View style={styles.buttonChart}>
+        <TouchableOpacity
+          onPress={handleChart}
+        >
+          <Ionicons name="trending-up" size={30} color="white" />
+          {/* <Text style={{color:'red', fontWeight:'bold', fontSize:'20'}}>
+            Chart
+          </Text> */}
 
-        </View>
+        {/* </TouchableOpacity>
+      </View> */}
+
 
       <View style={styles.container}>
-
-
         <Text style={styles.total}>Total Spending: Php {totalSpending.toFixed(2)}</Text>
         {budgetGoal ? (
           <>
@@ -202,82 +169,11 @@ export default function DashboardScreen({ expenses }) {
 
           {/* <Button title="Save Budget" onPress={saveBudget}/> */}
         </View>
-
-
-
-
-        <View style={{marginBottom:5, flexDirection:'row'}}>
-          <TouchableOpacity
-                onPress={()=>Alert.alert('Savings for a dream car')}
-                style={{marginHorizontal:25,}}
-            >
-              <Ionicons name="car-sport-outline" size={40} color="black" />
-          </TouchableOpacity>
-
-          <TouchableOpacity
-                onPress={()=>Alert.alert('Savings for a dream house')}
-                style={{marginHorizontal:25,}}
-            >
-              <Ionicons name="home-outline" size={40} color="black" />
-              
-          </TouchableOpacity>
-
-          <TouchableOpacity
-                onPress={()=>Alert.alert('Savings')}
-                style={{marginHorizontal:25,}}
-            >
-              <Ionicons name="wallet-outline" size={40} color="black" />
-          </TouchableOpacity>
-
-          <TouchableOpacity
-                onPress={()=>Alert.alert('Travel')}
-                style={{marginHorizontal:25,}}
-            >
-              <Ionicons name="airplane-outline" size={40} color="black" />
-          </TouchableOpacity>
-          
-        </View>
-
-
-
-      {/* Articles */}
-        <Text style={{fontSize:20, fontWeight:'bold', marginBottom:15}}>
-          Articles
+      
+        <Text style={{fontSize:20, fontWeight:'bold', marginBottom:10}}>
+          Insurance
         </Text>
- 
-        <ScrollView
-             horizontal
-            showsHorizontalScrollIndicator={false}
-           >
 
-            {articles.map((articles, index) => (
-              <TouchableOpacity
-                key={index}
-                onPress={() => handleImagePressArticles(index)}
-                activeOpacity={0.8} // Slight fade effect on press
-              >
-                <Image
-                  source={articles}
-                  style={styles.imageArticles}
-                />
-              </TouchableOpacity>
-            ))}
-          </ScrollView>
-   {/* Articles */}
-
-
-        {/* <View style={{flexDirection:'row'}}> */}
-          <Text style={{fontSize:20, fontWeight:'bold',}}>
-            Insurance
-          </Text>
-
-          {/* <View style={styles.viewView}> */}
-
-          {/* </View> */}
-        {/* </View> */}
-
-
-            {/* Insurance Image*/}
         <ScrollView
             ref={scrollViewRef}
             horizontal
@@ -298,43 +194,99 @@ export default function DashboardScreen({ expenses }) {
               </TouchableOpacity>
             ))}
           </ScrollView>
-        {/* Insurance */}
+
+          <Text style={{fontSize:20, fontWeight:'bold',}}>
+          For you
+          </Text>
 
 
-        {/* insurance modal */}
+      {/* 02-28-25 start*/}
+        {/* <Text style={styles.header}>Recent Expenses</Text> */}
+        {/* <LinearGradient
+            colors={['#005AA7', '#FFFDE4']} // Green gradient for Add Expense
+            style={styles.gradient}
+        > */}
+
+          {/* Flatlist start */}
+        {/* <FlatList
+        style={styles.flatListStyle}
+          data={newExpenses.slice(-20).reverse()}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={({ item }) => (
+            <>
+            <Text style={{margin:10, fontSize:15}}>{`${item.refnum} | ${item.date} | Php ${item.amount} | ${item.category} | ${item.notes}`}
+            </Text>
+
+            <TouchableOpacity
+              key={item.id}
+              onPress={()=>handleImagePress(item.photo)}
+            >
+            <Text style={{margin:10}}>
+                {/* {item.photo &&
+                  <Image source={{ uri: item.photo }} style={{ width: 100, height: 100 }} />
+                } */}
+
+                {/* {item.photo ? <Image source={{ uri: item.photo }} style={{ width: 100, height: 100 }} /> : <Text style={{fontWeight:'bold'}}>Image not available: ({item.refnum})</Text>}
+            </Text>
+            </TouchableOpacity>
+            </>    */}
+          {/* )}
+        /> */}
+        {/* flatlist end */}
+        {/* </LinearGradient> */}
+        {/* 02-28-25 end*/}
+
         <Modal visible={modalVisible} transparent onRequestClose={() => setModalVisible(false)}>
           <View style={styles.modalOverlay}>
+
             <TouchableOpacity onPress={() => setModalVisible(false)} style={styles.modalClose}>
               <Text style={styles.closeText}>Close</Text>
-            </TouchableOpacity>            
-            {/* <Image source={selectedImage} style={styles.fullImage} /> */}
-            {videoMap.length >=  imagePressedIndex ? 
-              <Video
-                    ref={videoRef}
-                    source={videoMap[imagePressedIndex]}
-                    style={styles.video}
-                    useNativeControls={true}
-                    shouldPlay
-                    isLooping={true}
-                    resizeMode="contain"                
-                    // onPlaybatrue}tusUpdate={handlePlaybackStatusUpdate}            
-              /> : 
-              <Text style={{color:'white', fontSize:20, fontWeight:'bold'}}>Video not available</Text>
-            }
+            </TouchableOpacity>
+            
+            {selectedImage ? <Image source={{uri: selectedImage}} style={styles.fullImage} />
+            : <Text style={{fontWeight:'bold', fontSize:30, marginTop:50, color:'white'}}>Image not available</Text>}
           </View>
         </Modal>
-        {/* insurance modal */}
 
-        {/* Articles modal */}
-        <Modal visible={modalVisibleArticles} transparent onRequestClose={() => setModalVisibleArticles(false)}>
-          <View style={styles.modalOverlay}>
-            <TouchableOpacity onPress={() => setModalVisibleArticles(false)} style={styles.modalClose}>
-              <Text style={styles.closeText}>Close</Text>
-            </TouchableOpacity>            
-            <Image source={selectedImageArticles} style={styles.fullImage} />
+
+
+        {/* chart */}
+        <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisibleChart}
+        onRequestClose={() => setModalVisibleChart(false)}
+        >
+        <View style={styles.modalView}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalTitle}>Expense Breakdown</Text>
+            {pieData.length > 0 ? (
+              <PieChart
+                data={pieData}
+                width={screenWidth - 100}
+                height={220}
+                chartConfig={{
+                  color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+                  labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+                }}
+                accessor="population"
+                backgroundColor="transparent"
+                paddingLeft="15"
+                absolute
+              />
+            ) : (
+              <Text>No selections yet</Text>
+            )}
+            <Button
+              title="Close"
+              onPress={()=> setModalVisibleChart(false)}
+              color="#4CAF50" // Green for submit
+              // onPress={() => setModalVidCountVisible(false)}
+            />
           </View>
-        </Modal>
-        {/* Articles modal */}
+        </View>
+      </Modal>
+
 
       </View>
     </LinearGradient>
@@ -342,9 +294,9 @@ export default function DashboardScreen({ expenses }) {
 }
 
 const styles = StyleSheet.create({
-gradient: { flex: 1,},
-  container: { flex: 1, padding: 20, marginTop:20 },
-  total: { fontSize: 24, fontWeight: 'bold', marginBottom: 20, marginTop: 5 },
+gradient: { flex: 1, borderRadius: 10, },
+  container: { flex: 1, padding: 20 },
+  total: { fontSize: 24, fontWeight: 'bold', marginBottom: 20, marginTop: 30 },
   budget: { fontSize: 18, color: 'blue', marginBottom: 5 },
 //   progress: { fontSize: 16, color: budgetProgress > 100 ? '#FF5252' : '#fff', marginBottom: 10 },
 progress: { fontSize: 16, color: '#FF5252', marginBottom: 10 },
@@ -452,31 +404,6 @@ progress: { fontSize: 16, color: '#FF5252', marginBottom: 10 },
     height: 90,
     marginHorizontal: 5,
     borderRadius: 10,
-  },
-  scrollContainer: {
-    alignItems: 'center',
-    marginBottom: 70,
-    marginTop:60
-    // backgroundColor:'#ff2800',
-  },
-  imageArticles: {
-    height: 60,
-    width:60,
-    marginHorizontal: 10,
-    borderRadius: 10,
-    marginBottom: 65
-  },
-  video: {
-    width: 400, // Full width minus padding
-    height: 320, // 16:9 aspect ratio
-    borderRadius: 10,
-    // marginLeft:170
-
-  },
-  viewView:{
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginVertical: 10, // Number, not string
   },
 
 });
