@@ -22,7 +22,7 @@ export default function DashboardScreen({ expenses }) {
   const [budgetInput, setBudgetInput] = useState('');
 
 
-  console.log('DashboardScreen newExpenses ' + JSON.stringify(newExpenses));
+  // console.log('DashboardScreen newExpenses ' + JSON.stringify(newExpenses));
   // Calculate total from newExpenses instead of props.expenses
   const totalSpending = newExpenses.reduce((sum, exp) => sum + parseFloat(exp.amount), 0);
   const budgetProgress = budgetGoal ? (totalSpending / budgetGoal) * 100 : 0;

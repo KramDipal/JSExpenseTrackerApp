@@ -104,22 +104,22 @@ console.log(formattedTotals[0], formattedTotals[1]);
             
             <View style={{flexDirection:'row'}}>
                 {/* <Text style={{fontSize:20, marginBottom:10, marginLeft:30}}>Food: Php</Text> */}
-                <Text style={{fontSize:20, marginLeft:30}}>{formattedTotals[3]}</Text>
+                <Text style={{fontSize:20, marginLeft:30, color:'#FDC830'}}>{formattedTotals[3]}</Text>
             </View>
 
             <View style={{flexDirection:'row'}}>
                 {/* <Text style={{fontSize:20, marginBottom:10, marginLeft:30}}>Transportation: Php</Text> */}
-                <Text style={{fontSize:20, marginLeft:30}}>{formattedTotals[0]}</Text>
+                <Text style={{fontSize:20, marginLeft:30, color:'#FDC830'}}>{formattedTotals[0]}</Text>
             </View>
 
             <View style={{flexDirection:'row'}}>
                 {/* <Text style={{fontSize:20, marginBottom:10, marginLeft:30}}>Entertainment: Php</Text> */}
-                <Text style={{fontSize:20, marginLeft:30}}>{formattedTotals[1]}</Text>
+                <Text style={{fontSize:20, marginLeft:30, color:'#FDC830'}}>{formattedTotals[1]}</Text>
             </View>
 
             <View style={{flexDirection:'row', marginBottom:60}}>
                 {/* <Text style={{fontSize:20, marginBottom:60, marginLeft:30}}>Bill: Php</Text> */}
-                <Text style={{fontSize:20, marginLeft:30}}>{formattedTotals[2]}</Text>
+                <Text style={{fontSize:20, marginLeft:30, color:'#FDC830'}}>{formattedTotals[2]}</Text>
             </View>
 
         </View>

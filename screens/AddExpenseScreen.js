@@ -136,6 +136,7 @@ export default function AddExpenseScreen({ setExpenses, expenses }) {
             <Picker.Item label="Transportation" value="Transport" />
             <Picker.Item label="Entertainment" value="Entertainment" />
             <Picker.Item label="Bills" value="Bills" />
+            <Picker.Item label="Others" value="Others" />
           </Picker>
           <TextInput
             style={styles.input}

@@ -1,25 +1,24 @@
 
 import React, {useState} from 'react';
-import { Text, View, FlatList, TouchableOpacity, Button, StyleSheet, Image, Modal, Dimensions } from "react-native";
+import { Text, View, FlatList, TouchableOpacity, Button, StyleSheet, Image, Modal, Dimensions, TextInput, Pressable } from "react-native";
 import { DBContextStore } from '../dbContext';
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { Searchbar } from 'react-native-paper';
 
 import { LinearGradient } from 'expo-linear-gradient';
+
+import { AppStyle } from '../constants';
 
 const screenWidth = Dimensions.get('window').width;
 export default function SearchScreen(){
     const dbcontextStore = useContext(DBContextStore);
     const  { newExpenses,  newExpenses2 }  = useContext(DBContextStore);
     const [searchQuery, setSearchQuery] = useState('');
-  //image blow up
-  const [ modalVisible, setModalVisible ] = useState(false);
-  const [ selectedImage, setSelectedImage ] = useState(null);
-//   const [ dataFetch, setDataFect ] = useState([]);
+    //image blow up
+    const [ modalVisible, setModalVisible ] = useState(false);
+    const [ selectedImage, setSelectedImage ] = useState(null);
 
-//   console.log('SearchScreen newExpenses2 ' + JSON.stringify(newExpenses2));
-
-    const handleSearchEvent = async () => {
+    const handleSearchEvent = async (text) => {
         console.log('handleSearchEvent, searchQuery:', searchQuery);
         await dbcontextStore.fetchByRecord(dbcontextStore.db, searchQuery); // Pass searchQuery
         console.log('handleSearchEvent newExpenses2:', JSON.stringify(newExpenses2, null, 2));
@@ -27,36 +26,47 @@ export default function SearchScreen(){
 
 
     const handleImagePress = (photo) => {
-        // Alert.alert('Image Pressed', `You clicked on image #${index + 1}`);
-        // Alert.alert('Image Pressed ' + index + photo);
         setSelectedImage(photo);    
         setModalVisible(true);
-        // You can replace this with any action, e.g., navigation or custom logic
+
       };
 
-    //   const dataFecth = dbcontextStore.fetchByRecord(searchQuery)
-
-    //   console.log('dataFecth ' + JSON.stringify(dataFecth));
+          //  load on mount
+      useEffect(() => {
+        handleSearchEvent(searchQuery);
+      }, [searchQuery]);
 
 
     return(
         <LinearGradient
-          // colors={['#FF5722', '#FF8A65']} // Orange gradient for Filters
           colors={['#0288D1', '#FFFDE4']}
           style={styles.gradient}
         >
         <View>
-            <Searchbar
+            {/* <Searchbar
             style={{marginTop:10, marginBottom:20}}
             placeholder="Search"
             onChangeText={setSearchQuery}
             value={searchQuery}
             onIconPress={handleSearchEvent}
-            />
+            /> */}
             {/* <TouchableOpacity onPress={handleSearchEvent}>
                 <Text style={{fontSize:50}}>Search</Text>
             </TouchableOpacity> */}
-
+                <View style={styles.searchContent}>
+                    <TextInput
+                        value={searchQuery}
+                        onChangeText={setSearchQuery}
+                        placeholder="Enter a value"
+                        style={{ backgroundColor:'#DDDDDD', width:'95%', margin:10, borderRadius:5 }}
+                    />
+                    {/* <Pressable
+                        onPress={handleSearchEvent}           
+                        style={styles.button}         
+                    >
+                        <Text>Search</Text>
+                    </Pressable>     */}
+                </View>
 
         <FlatList
         // style={styles.flatListStyle}
@@ -134,4 +144,16 @@ const styles = StyleSheet.create({
         height: screenWidth * 0.9 * (100 / 100), // Maintain aspect ratio
         borderRadius: 10,
       },
+      searchContent:{
+        paddingVertical:5,
+        borderBottomColor:AppStyle.gunMetal,
+        borderBottomWidth:2,
+        flexDirection:'row',
+    },
+    button:{        
+        alignItems: 'center',
+        backgroundColor: '#DDDDDD',
+        padding: 10,
+        margin:10,
+    },
 })
