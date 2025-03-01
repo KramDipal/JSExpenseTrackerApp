@@ -90,8 +90,8 @@ export default function DBcreateContextProvider(props){
 
                 console.log('fetchByRecord search:', search);
                 try {
-                    const query = 'SELECT * FROM ExpenseT WHERE category LIKE ? OR notes LIKE ? OR refnum LIKE ? OR date LIKE ? OR other LIKE ?';
-                    const result = await database.getAllAsync(query, [`%${search}%`, `%${search}%`, `%${search}%`, `%${search}%`, `%${search}%`]);
+                    const query = 'SELECT * FROM ExpenseT WHERE category LIKE ? OR notes LIKE ? OR refnum LIKE ? OR date LIKE ? OR other LIKE ? OR amount LIKE ?';
+                    const result = await database.getAllAsync(query, [`%${search}%`, `%${search}%`, `%${search}%`, `%${search}%`, `%${search}%`, `%${search}%`]);
                 // const query = 'SELECT * FROM ExpenseT WHERE category LIKE ?';
                 // const result = await database.getAllAsync(query, [`%${search}%`]); // Use LIKE for 
                 // partial matches

@@ -1,5 +1,5 @@
 import React, { useContext, useState, useRef, useEffect } from 'react';
-import { View, TextInput, Button, StyleSheet, Text, TouchableOpacity, Alert } from 'react-native';
+import { View, TextInput, Button, StyleSheet, Text, TouchableOpacity, Alert, ImageBackground } from 'react-native';
 // import RNPickerSelect from 'react-native-picker-select';
 import {Picker} from '@react-native-picker/picker';
 import 'react-native-get-random-values';
@@ -96,6 +96,11 @@ export default function AddExpenseScreen({ setExpenses, expenses }) {
     colors={['#0288D1', '#FFFDE4']} // Green gradient for Add Expense
     style={styles.gradient}
     >
+    {/* <ImageBackground 
+      source={require('../assets/logo/icon.jpg')} 
+      resizeMode="stretch"
+      style={styles.container}
+    > */}
     <View style={styles.container}>
       {cameraVisible ? (
         <CameraView 
@@ -158,6 +163,7 @@ export default function AddExpenseScreen({ setExpenses, expenses }) {
       )}
     </View>
     </LinearGradient>
+    // </ImageBackground>
   );
 }
 

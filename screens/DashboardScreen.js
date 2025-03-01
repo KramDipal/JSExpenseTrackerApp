@@ -46,6 +46,9 @@ export default function DashboardScreen({ expenses }) {
 
   //select video to play
   const [ imagePressedIndex, setImagePressedIndex ] = useState(0);
+
+  //modal about
+  // const [ modalVisibleAbout, setModalVisibleAbout ] = useState(null)
   // const [ modalVisibleBarChart, setModalVisibleBarChart ] = useState(false);
 
   // const [selectRecordCounts, setSelectRecordCounts] = useState(
@@ -154,20 +157,24 @@ export default function DashboardScreen({ expenses }) {
     // You can replace this with any action, e.g., navigation or custom logic
   };
 
+  // const handleAboutPress = () => {
+  //   setModalVisibleAbout(true);
+  // }
+
   return (
     <LinearGradient 
       // colors={['#0288D1', '#4FC3F7']} 
       colors={['#0288D1', '#FFFDE4']}
       style={styles.gradient}>
 
-        <View style={{marginTop:15, marginBottom:20, position:'absolute', right: 20,}}>
+        {/* <View style={{marginTop:15, marginBottom:20, position:'absolute', right: 20,}}>
           <TouchableOpacity
-            onPress={()=>Alert.alert('Pressed!')}
-          >
-          <Text style={{fontSize:15, fontWeight:'bold'}}>My Account</Text>
+            onPress={handleAboutPress}
+          > */}
+          {/* <Ionicons name="information-circle-outline" size={40} color="black" />
           </TouchableOpacity>
 
-        </View>
+        </View> */}
 
       <View style={styles.container}>
 
@@ -336,6 +343,32 @@ export default function DashboardScreen({ expenses }) {
         </Modal>
         {/* Articles modal */}
 
+
+
+        {/* About modal */}
+        {/* <Modal 
+          visible={modalVisibleAbout} 
+          transparent 
+          onRequestClose={() => setModalVisibleAbout(false)}
+        >
+          <View style={styles.modalOverlay}>
+            <TouchableOpacity onPress={() => setModalVisibleAbout(false)} style={styles.modalClose}>
+              <Text style={styles.closeText}>Close</Text>
+
+            </TouchableOpacity>             */}
+            {/* <Image source={selectedImageArticles} style={styles.fullImage} /> */}
+
+            {/* <View style={{alignContent:'center', alignItems:'center'}}>
+              <Text style={{color:'white', fontSize:20, marginBottom:20}}>Developed by: mfl3genA&i company</Text> */}
+              {/* <Text style={{color:'white', fontSize:20, marginBottom:20}}>Version: 1.0.10</Text>
+              <Text style={{color:'white', fontSize:20, marginBottom:20}}>Contact us: +639175736952</Text> */}
+              {/* <Text style={{color:'white', fontSize:20, marginBottom:20}}>URL: www.mfl3genA&i.io</Text>
+            </View>
+
+          </View>
+        </Modal> */}
+        {/* About modal */}
+
       </View>
     </LinearGradient>
   );
@@ -478,5 +511,8 @@ progress: { fontSize: 16, color: '#FF5252', marginBottom: 10 },
     alignItems: 'center',
     marginVertical: 10, // Number, not string
   },
+  aboutStyle:{
+    // marginVertical: 10, // Number, not string
+  }
 
 });

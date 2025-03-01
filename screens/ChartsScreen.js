@@ -8,10 +8,11 @@ import {
   } from 'react-native-chart-kit';
 
   import { Ionicons } from '@expo/vector-icons'; // For camera icon
+import { LinearGradient } from "expo-linear-gradient";
 const screenWidth = Dimensions.get('window').width;
 export default function ChartsScreen(){
   const dbcontextStore = useContext(DBContextStore);
-  const  { newExpenses }  = useContext(DBContextStore);
+  const  { newExpenses, newExpenses2 }  = useContext(DBContextStore);
 
   // Step 1: Group by category and count occurrences
   const categoryCount = newExpenses.reduce((occurrences, item) => {
@@ -54,6 +55,10 @@ const formattedTotals = Object.entries(categoryTotals).map(([category, total]) =
 //   };
 
     return(        
+    <LinearGradient
+    colors={['#0288D1', '#FFFDE4']} // Green gradient for Add Expense
+    style={styles.gradient}
+    >  
     <>
         <View style={styles.modalView}>
           <View style={styles.modalContent}>
@@ -133,7 +138,7 @@ const formattedTotals = Object.entries(categoryTotals).map(([category, total]) =
 
         </View>
     </>
-
+    </LinearGradient>
 
         
     )
@@ -156,7 +161,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        // backgroundColor: 'rgba(0, 0, 0, 0.5)',
       },
       modalContent: {
         backgroundColor: 'white',
@@ -170,7 +175,7 @@ const styles = StyleSheet.create({
         // margin:20,
         // justifyContent: 'center',
         // alignItems: 'center',
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        // backgroundColor: 'rgba(0, 0, 0, 0.5)',
         // marginBottom: 10,
       },
       modalContentBar: {

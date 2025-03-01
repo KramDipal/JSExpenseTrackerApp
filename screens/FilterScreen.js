@@ -9,16 +9,15 @@ export default function FilterScreen({ expenses }) {
   const  { newExpenses }  = useContext(DBContextStore);
 
 
-//   const categories = [...new Set(expenses.map((exp) => exp.category))]; // Unique categories
-    const categories = [...new Set(newExpenses.map((exp) => exp.category))]; // Unique categories
+  const categories = [...new Set(newExpenses.map((exp) => exp.category))]; // Unique categories
 
 
   return (
     <LinearGradient
-    // colors={['#FF5722', '#FF8A65']} // Orange gradient for Filters
     colors={['#0288D1', '#FFFDE4']}
     style={styles.gradient}
     >
+
     <View style={styles.container}>
       <Text style={styles.header}>Filter by Category</Text>
       <FlatList

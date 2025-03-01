@@ -201,14 +201,14 @@ export default function DashboardScreen({ expenses }) {
 
 
       {/* 02-28-25 start*/}
-        {/* <Text style={styles.header}>Recent Expenses</Text> */}
-        {/* <LinearGradient
+        <Text style={styles.header}>Recent Expenses</Text>
+        <LinearGradient
             colors={['#005AA7', '#FFFDE4']} // Green gradient for Add Expense
             style={styles.gradient}
-        > */}
+        >
 
-          {/* Flatlist start */}
-        {/* <FlatList
+          {/* {/* Flatlist start */}
+        <FlatList
         style={styles.flatListStyle}
           data={newExpenses.slice(-20).reverse()}
           keyExtractor={(item) => item.id.toString()}
@@ -222,18 +222,18 @@ export default function DashboardScreen({ expenses }) {
               onPress={()=>handleImagePress(item.photo)}
             >
             <Text style={{margin:10}}>
-                {/* {item.photo &&
+                {item.photo &&
                   <Image source={{ uri: item.photo }} style={{ width: 100, height: 100 }} />
-                } */}
+                }
 
-                {/* {item.photo ? <Image source={{ uri: item.photo }} style={{ width: 100, height: 100 }} /> : <Text style={{fontWeight:'bold'}}>Image not available: ({item.refnum})</Text>}
+                {item.photo ? <Image source={{ uri: item.photo }} style={{ width: 100, height: 100 }} /> : <Text style={{fontWeight:'bold'}}>Image not available: ({item.refnum})</Text>}
             </Text>
             </TouchableOpacity>
-            </>    */}
-          {/* )}
-        /> */}
+            </>   
+          )}
+        />
         {/* flatlist end */}
-        {/* </LinearGradient> */}
+        </LinearGradient>
         {/* 02-28-25 end*/}
 
         <Modal visible={modalVisible} transparent onRequestClose={() => setModalVisible(false)}>

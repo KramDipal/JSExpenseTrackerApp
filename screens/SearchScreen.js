@@ -23,13 +23,15 @@ export default function SearchScreen(){
     //image blow up
     const [ modalVisible, setModalVisible ] = useState(false);
     const [ selectedImage, setSelectedImage ] = useState(null);
-
+    const [refreshing,setRefreshing] = useState(false);
 
     
 
         //for deleted records
     const handlePressDelete = (id, refnum) =>{
-      
+      console.log("handlePressDelete " + id);
+
+
         Alert.alert(
             'Delete Record',
             `Are you sure you want to delete this record #${id} with Ref # ${refnum}`,
@@ -42,23 +44,19 @@ export default function SearchScreen(){
               {
                 text: 'Yes',
                 onPress: () => handledeleteRecord(id),
+                
               },
             ],
-            { cancelable: false }
+            { cancelable: true }
         );
 
-        const handledeleteRecord = async (id) => {
-          await dbcontextStore.deleteRecord(id);
-          // firebaseContextStore.deleteRecord(id);
-          Toast.show('Record delete');
-        }
+    }
 
-        console.log("handlePressDelete " + id);
-        setNewList((prevItems) => prevItems.filter((item) => item.id !== id));
-
-        // alert(`Record deleted: ${employee}`);
-        // firebaseContextStore.deleteRecord(id);
-        Toast.show('Record delete');
+    
+    const handledeleteRecord = async (id) => {
+      await dbcontextStore.deleteRecord(id);
+      setNewList((prevItems) => prevItems.filter((item) => item.id !== id));
+      // Toast.show('Record delete');
     }
 
     const handleSearchEvent = async (text) => {
@@ -70,8 +68,8 @@ export default function SearchScreen(){
 
     };
 
-    console.log('handleSearchEvent newExpenses2 start :', JSON.stringify(newExpenses2, null, 2));
-    console.log('handleSearchEvent newList start :', JSON.stringify(newList, null, 2));
+    // console.log('handleSearchEvent newExpenses2 start :', JSON.stringify(newExpenses2, null, 2));
+    // console.log('handleSearchEvent newList start :', JSON.stringify(newList, null, 2));
 
     const handleImagePress = (photo) => {
         setSelectedImage(photo);    
@@ -89,7 +87,14 @@ export default function SearchScreen(){
          setNewList(newExpenses2); // Update state with fetched data
       }, [newExpenses2]);
 
-      
+      //reload data on refresh
+      const onRefresh = async()=>{
+        setRefreshing(true)
+          await dbcontextStore.fetchByRecord(dbcontextStore.db, searchQuery).then(()=>{            setRefreshing(false)
+        });
+    }
+
+
     return(
         <LinearGradient
           colors={['#0288D1', '#FFFDE4']}
@@ -123,8 +128,10 @@ export default function SearchScreen(){
         
         {/* Flat list Start */}
         <FlatList
+        
           data={newList.slice(-10).reverse()}
-            // data={newExpenses2}
+          refreshing={refreshing}
+          onRefresh={onRefresh}
           keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => (
             <>
@@ -162,14 +169,18 @@ export default function SearchScreen(){
           contentContainerStyle={{ paddingBottom: 100 }}
         />
         {/* flat list *End */}
-
-
         </View>
+
+
 
         <Modal visible={modalVisible} transparent onRequestClose={() => setModalVisible(false)}>
           <View style={styles.modalOverlay}>
         
-            <TouchableOpacity onPress={() => setModalVisible(false)} style={styles.modalClose}>
+            <TouchableOpacity 
+              onPress={() => setModalVisible(false)} 
+              style={styles.modalClose}
+              // onBlur={()=>setModalVisible(false)}
+            >
               <Text style={styles.closeText}>Close</Text>              
             </TouchableOpacity>
             {selectedImage ? <Image source={{uri: selectedImage}} style={styles.fullImage} />
@@ -177,6 +188,9 @@ export default function SearchScreen(){
             
           </View>
         </Modal>
+
+
+
         </LinearGradient>
     )
 
@@ -207,8 +221,8 @@ const styles = StyleSheet.create({
       },
       modalClose: {
         position: 'absolute',
-        top: 150,
-        right: 20,
+        top: 110,
+        right: 25,
       },
       closeText: {
         color: '#fff',
@@ -216,7 +230,7 @@ const styles = StyleSheet.create({
       },
       fullImage: {
         width: screenWidth * 0.9,
-        height: screenWidth * 0.9 * (100 / 100), // Maintain aspect ratio
+        height: screenWidth * 0.9 * (50 / 50), // Maintain aspect ratio
         borderRadius: 10,
       },
       searchContent:{

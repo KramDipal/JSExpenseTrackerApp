@@ -10,12 +10,12 @@ import SearchScreen from './screens/SearchScreen';
 import { Ionicons } from '@expo/vector-icons'
 // import { LinearGradient } from 'expo-linear-gradient';
 
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Image, TouchableOpacity, Alert } from 'react-native';
 
 import DBcreateContextProvider from './dbContext';
 
 // import InitDB from './database/initDB';
-
+import miExpenseIcon from './assets/logo/icon.jpg';
 const Tab = createBottomTabNavigator();
 
 export default function App() {
@@ -26,11 +26,56 @@ export default function App() {
     <DBcreateContextProvider>
     <NavigationContainer>
       <Tab.Navigator>
-        <Tab.Screen name="Home" 
+        <Tab.Screen name="miExpense" 
                 options={{
+                  // tabBarLabel: null,
                   tabBarIcon: ({color,size})=> (
                   <Ionicons name="home" color={color} size={size}/>
-                )}}>
+                  // <Image
+                  //   source={miExpenseIcon}
+                  //   style={{ width: size, height: size, tintColor: color }} // Adjust size and color
+                  //   resizeMode="contain" // Ensures proper scaling
+                  // />
+                ),
+                // headerRight: () => ()
+                headerRight: () => (
+                  <TouchableOpacity           
+                    onPress={()=>Alert.alert('About:',
+                      'Developed by: mfl3genA7i company',
+                      [                     
+                        {
+                          text: 'Connect with US: +639175736952',
+                          // onPress: () => Linking.openURL('https://miexpense.com'),
+                          style: 'cancel',
+                        },
+                        {
+                          text: 'Yes',
+                          // onPress: () => handledeleteRecord(id),
+                          
+                        },
+
+                      ],
+                      { cancelable: true }
+                     
+                    )}
+                  >
+                    <Ionicons 
+                      name="information-circle-outline" 
+                      size={40} color="black" 
+                      style={{marginRight:20}}
+                    />
+
+
+                  </TouchableOpacity>
+
+                  // <Image
+                  //   source={miExpenseIcon}
+                  //   style={{width:80, height:80, marginLeft:150}} // Custom style for header
+                  //   resizeMode="contain"
+                  // />
+                ),
+                
+                }}>
           {() => <DashboardScreen expenses={expenses} />}
         </Tab.Screen>
 
