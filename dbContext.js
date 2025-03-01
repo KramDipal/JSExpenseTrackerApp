@@ -21,7 +21,7 @@ export default function DBcreateContextProvider(props){
                 const setupDatabase = async () => {
                     try {
                         // await FileSystem.deleteAsync(FileSystem.documentDirectory + 'SQLite/ExpDB.db');
-                        // await db.execAsync('ALTER TABLE ExpenseT ADD COLUMN photo TEXT');
+                        // await db.execAsync('ALTER TABLE ExpenseT ADD COLUMN others TEXT');
 
 
                         const database = await SQLite.openDatabaseAsync('ExpDB.db');
@@ -37,7 +37,8 @@ export default function DBcreateContextProvider(props){
                             category TEXT,
                             notes TEXT,
                             date DATETIME,
-                            photo TEXT
+                            photo TEXT,
+                            other TEXT
                         );
                         `);
 
@@ -89,8 +90,8 @@ export default function DBcreateContextProvider(props){
 
                 console.log('fetchByRecord search:', search);
                 try {
-                    const query = 'SELECT * FROM ExpenseT WHERE category LIKE ? OR notes LIKE ? OR refnum LIKE ? OR date LIKE ?';
-                    const result = await database.getAllAsync(query, [`%${search}%`, `%${search}%`, `%${search}%`, `%${search}%`]);
+                    const query = 'SELECT * FROM ExpenseT WHERE category LIKE ? OR notes LIKE ? OR refnum LIKE ? OR date LIKE ? OR other LIKE ?';
+                    const result = await database.getAllAsync(query, [`%${search}%`, `%${search}%`, `%${search}%`, `%${search}%`, `%${search}%`]);
                 // const query = 'SELECT * FROM ExpenseT WHERE category LIKE ?';
                 // const result = await database.getAllAsync(query, [`%${search}%`]); // Use LIKE for 
                 // partial matches
@@ -145,6 +146,17 @@ export default function DBcreateContextProvider(props){
             };
             // console.log('newExpenses ' + JSON.stringify(newExpenses));
 
+            const deleteRecord = async (id) =>{
+                if (!db) return;
+                try {
+                    await db.runAsync('DELETE FROM ExpenseT WHERE id =?', [id]);
+                    console.log('Record deleted');
+                    fetchTasks();
+                } catch (error) {
+                    console.error('Error deleting record:', error);
+                }
+            }
+
     return(
         <DBContextStore.Provider value={{
             db,
@@ -155,6 +167,7 @@ export default function DBcreateContextProvider(props){
             budgetGoal,
             fetchByRecord,
             handleSaveBudget,
+            deleteRecord,
             // setupDatabase,
         }}>
             {props.children}

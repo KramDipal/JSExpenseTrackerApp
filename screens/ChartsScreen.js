@@ -31,7 +31,7 @@ export default function ChartsScreen(){
 const formattedTotals = Object.entries(categoryTotals).map(([category, total]) => `${category}: Php ${total}`);
 
 // Step 3: Display the results
-console.log(formattedTotals[0], formattedTotals[1]);
+// console.log(formattedTotals[0], formattedTotals[1]);
 
   // Step 2: Convert to pie chart format
   const pieData = Object.entries(categoryCount).map(([name, population], index) => ({
@@ -101,25 +101,34 @@ console.log(formattedTotals[0], formattedTotals[1]);
                 {/* <Text style={{color:'blue', fontSize:20, marginBottom:20, position: 'absolute', left:300}}>Total:</Text> */}
             </View>
 
-            
+            {/* Bills */}
             <View style={{flexDirection:'row'}}>
                 {/* <Text style={{fontSize:20, marginBottom:10, marginLeft:30}}>Food: Php</Text> */}
-                <Text style={{fontSize:20, marginLeft:30, color:'#FDC830'}}>{formattedTotals[3]}</Text>
+                <Text style={{fontSize:20, marginLeft:30, color:'#4CAF50'}}>{formattedTotals[3]}</Text>
             </View>
 
+            {/* Others */}
             <View style={{flexDirection:'row'}}>
                 {/* <Text style={{fontSize:20, marginBottom:10, marginLeft:30}}>Transportation: Php</Text> */}
-                <Text style={{fontSize:20, marginLeft:30, color:'#FDC830'}}>{formattedTotals[0]}</Text>
+                <Text style={{fontSize:20, marginLeft:30, color:'#FF6384'}}>{formattedTotals[0]}</Text>
             </View>
 
+            {/* Food */}
             <View style={{flexDirection:'row'}}>
                 {/* <Text style={{fontSize:20, marginBottom:10, marginLeft:30}}>Entertainment: Php</Text> */}
-                <Text style={{fontSize:20, marginLeft:30, color:'#FDC830'}}>{formattedTotals[1]}</Text>
+                <Text style={{fontSize:20, marginLeft:30, color:'#36A2EB'}}>{formattedTotals[1]}</Text>
             </View>
 
-            <View style={{flexDirection:'row', marginBottom:60}}>
+            {/* Entetainment */}
+            <View style={{flexDirection:'row'}}>
                 {/* <Text style={{fontSize:20, marginBottom:60, marginLeft:30}}>Bill: Php</Text> */}
                 <Text style={{fontSize:20, marginLeft:30, color:'#FDC830'}}>{formattedTotals[2]}</Text>
+            </View>
+
+            {/* Transportation */}
+            <View style={{flexDirection:'row', marginBottom:60}}>
+                {/* <Text style={{fontSize:20, marginBottom:60, marginLeft:30}}>Bill: Php</Text> */}
+                <Text style={{fontSize:20, marginLeft:30, color:'black'}}>{formattedTotals[4]}</Text>
             </View>
 
         </View>

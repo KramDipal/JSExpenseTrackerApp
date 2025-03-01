@@ -1,6 +1,6 @@
 
 import React, {useState} from 'react';
-import { Text, View, FlatList, TouchableOpacity, Button, StyleSheet, Image, Modal, Dimensions, TextInput, Pressable } from "react-native";
+import { Text, View, FlatList, TouchableOpacity, Button, StyleSheet, Image, Modal, Dimensions, TextInput, Pressable, Alert } from "react-native";
 import { DBContextStore } from '../dbContext';
 import { useContext, useEffect } from "react";
 import { Searchbar } from 'react-native-paper';
@@ -8,22 +8,70 @@ import { Searchbar } from 'react-native-paper';
 import { LinearGradient } from 'expo-linear-gradient';
 
 import { AppStyle } from '../constants';
+import Toast from 'react-native-root-toast';
+
+import { Ionicons } from '@expo/vector-icons'; // For camera icon
 
 const screenWidth = Dimensions.get('window').width;
 export default function SearchScreen(){
     const dbcontextStore = useContext(DBContextStore);
     const  { newExpenses,  newExpenses2 }  = useContext(DBContextStore);
+
+    const[ newList, setNewList ] = useState(newExpenses2);
+
     const [searchQuery, setSearchQuery] = useState('');
     //image blow up
     const [ modalVisible, setModalVisible ] = useState(false);
     const [ selectedImage, setSelectedImage ] = useState(null);
 
+
+    
+
+        //for deleted records
+    const handlePressDelete = (id, refnum) =>{
+      
+        Alert.alert(
+            'Delete Record',
+            `Are you sure you want to delete this record #${id} with Ref # ${refnum}`,
+            [
+              {
+                text: 'No',
+                onPress: () => console.log('Cancel Pressed'),
+                style: 'cancel',
+              },
+              {
+                text: 'Yes',
+                onPress: () => handledeleteRecord(id),
+              },
+            ],
+            { cancelable: false }
+        );
+
+        const handledeleteRecord = async (id) => {
+          await dbcontextStore.deleteRecord(id);
+          // firebaseContextStore.deleteRecord(id);
+          Toast.show('Record delete');
+        }
+
+        console.log("handlePressDelete " + id);
+        setNewList((prevItems) => prevItems.filter((item) => item.id !== id));
+
+        // alert(`Record deleted: ${employee}`);
+        // firebaseContextStore.deleteRecord(id);
+        Toast.show('Record delete');
+    }
+
     const handleSearchEvent = async (text) => {
-        console.log('handleSearchEvent, searchQuery:', searchQuery);
+        // console.log('handleSearchEvent, searchQuery:', searchQuery);
         await dbcontextStore.fetchByRecord(dbcontextStore.db, searchQuery); // Pass searchQuery
-        console.log('handleSearchEvent newExpenses2:', JSON.stringify(newExpenses2, null, 2));
+        // setNewList(newExpenses2);
+        // console.log('handleSearchEvent newExpenses2:', JSON.stringify(newExpenses2, null, 2));
+        // console.log('handleSearchEvent newExpenses2:', JSON.stringify(newExpenses2, null, 2));
+
     };
 
+    console.log('handleSearchEvent newExpenses2 start :', JSON.stringify(newExpenses2, null, 2));
+    console.log('handleSearchEvent newList start :', JSON.stringify(newList, null, 2));
 
     const handleImagePress = (photo) => {
         setSelectedImage(photo);    
@@ -36,7 +84,12 @@ export default function SearchScreen(){
         handleSearchEvent(searchQuery);
       }, [searchQuery]);
 
+      //  load on mount or in every change in  newExpenses2
+      useEffect(() => {
+         setNewList(newExpenses2); // Update state with fetched data
+      }, [newExpenses2]);
 
+      
     return(
         <LinearGradient
           colors={['#0288D1', '#FFFDE4']}
@@ -67,28 +120,50 @@ export default function SearchScreen(){
                         <Text>Search</Text>
                     </Pressable>     */}
                 </View>
-
+        
+        {/* Flat list Start */}
         <FlatList
-        // style={styles.flatListStyle}
-          data={newExpenses2.slice(-50).reverse()}
+          data={newList.slice(-10).reverse()}
             // data={newExpenses2}
           keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => (
             <>
-            <Text style={{margin:10, fontSize:15}}>{`${item.refnum} | ${item.date} | Php ${item.amount} | ${item.category} | ${item.notes}`}
-            </Text>
 
-            <TouchableOpacity
-              key={item.id}
-              onPress={()=>handleImagePress(item.photo)}
-            >
-            <Text style={{margin:10}}>
-                {item.photo ? <Image source={{ uri: item.photo }} style={{ width: 150, height: 150 }} /> : <Text style={{fontWeight:'bold'}}>Image not available: ({item.refnum})</Text>}
-            </Text>
-            </TouchableOpacity>
-            </>   
+              <View style={styles.box}>
+                <Text style={{margin:10, fontSize:15}}>{`${item.refnum} | ${item.date} | Php ${item.amount} | ${item.category} | ${item.notes}`}
+                </Text>
+
+                <View style={{flexDirection:'row'}}>
+                  <TouchableOpacity
+                    key={item.id}
+                    onPress={()=>handleImagePress(item.photo)}
+                  >
+                  <Text style={{margin:10}}>
+                      {item.photo ? <Image source={{ uri: item.photo }} style={{ width: 120, height: 120 }} /> : <Text style={{fontWeight:'bold'}}>Image not available: ({item.refnum})</Text>}
+                  </Text>
+                  </TouchableOpacity>
+                  
+                  <TouchableOpacity
+                      onPress={()=>handlePressDelete(item.id, item.refnum)}
+                      style={{position:'absolute', right: 20,}}
+                      >
+                      <Ionicons name="trash-outline" size={30} color="red" />
+                  </TouchableOpacity>
+                </View>
+
+
+                {/* <Button onPress={()=>handlePressDelete(item.id)}
+                  title='Delete'
+                  /> */}
+              </View>
+
+            </>
           )}
+          contentContainerStyle={{ paddingBottom: 100 }}
         />
+        {/* flat list *End */}
+
+
         </View>
 
         <Modal visible={modalVisible} transparent onRequestClose={() => setModalVisible(false)}>
@@ -156,4 +231,19 @@ const styles = StyleSheet.create({
         padding: 10,
         margin:10,
     },
+    box: {
+      width: '90%',
+      padding: 10,
+      marginVertical: 10,
+      // backgroundColor: '#0288D1',
+      borderWidth: 1,
+      borderColor: '#dddddd',
+      borderRadius: 10,
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.1,
+      shadowRadius: 4,
+      elevation: 2,
+      marginLeft: 20,
+  },
 })

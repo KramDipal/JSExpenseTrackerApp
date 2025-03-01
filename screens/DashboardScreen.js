@@ -115,20 +115,20 @@ export default function DashboardScreen({ expenses }) {
   // };
 
   // Step 1: Group by category and count occurrences
-  const categoryCount = newExpenses.reduce((occurrences, item) => {
-    occurrences[item.category] = (occurrences[item.category] || 0) + 1;
-    return occurrences;
-  }, {});
+  // const categoryCount = newExpenses.reduce((acc, item) => {
+  //   acc[item.category] = (acc[item.category] || 0) + 1;
+  //   return acc;
+  // }, {});
 
 
   // Step 2: Convert to pie chart format
-  const pieData = Object.entries(categoryCount).map(([name, population], index) => ({
-    name, // Category name (e.g., "Transport", "Entertainment", "Bills")
-    population, // Count of occurrences
-    color: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0'][index], // Assign distinct colors
-    legendFontColor: '#7F7F7F',
-    legendFontSize: 15,
-  })).filter(item => item.population > 0); // Only include categories with counts
+  // const pieData = Object.entries(categoryCount).map(([name, population], index) => ({
+  //   name, // Category name (e.g., "Transport", "Entertainment", "Bills")
+  //   population, // Count of occurrences
+  //   color: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0'][index], // Assign distinct colors
+  //   legendFontColor: '#7F7F7F',
+  //   legendFontSize: 15,
+  // })).filter(item => item.population > 0); // Only include categories with counts
 
     // console.log('pieData ' + pieData);
 
