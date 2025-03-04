@@ -14,6 +14,9 @@ export default function ChartsScreen(){
   const dbcontextStore = useContext(DBContextStore);
   const  { newExpenses, newExpenses2 }  = useContext(DBContextStore);
 
+
+  const totalSpending = newExpenses.reduce((sum, exp) => sum + parseFloat(exp.amount), 0);
+
   // Step 1: Group by category and count occurrences
   const categoryCount = newExpenses.reduce((occurrences, item) => {
     occurrences[item.category] = (occurrences[item.category] || 0) + 1;
@@ -29,7 +32,7 @@ export default function ChartsScreen(){
 
 
 // Step 2: Format the output as "Category: Php Amount"
-const formattedTotals = Object.entries(categoryTotals).map(([category, total]) => `${category}: Php ${total}`);
+const formattedTotals = Object.entries(categoryTotals).map(([category, total]) => `${category}: Php ${total}.00`);
 
 // Step 3: Display the results
 // console.log(formattedTotals[0], formattedTotals[1]);
@@ -131,10 +134,19 @@ const formattedTotals = Object.entries(categoryTotals).map(([category, total]) =
             </View>
 
             {/* Transportation */}
-            <View style={{flexDirection:'row', marginBottom:60}}>
+            <View style={{flexDirection:'row'}}>
                 {/* <Text style={{fontSize:20, marginBottom:60, marginLeft:30}}>Bill: Php</Text> */}
                 <Text style={{fontSize:20, marginLeft:30, color:'black'}}>{formattedTotals[4]}</Text>
             </View>
+
+            {/* Total */}
+            {/* <Text>{totalSpending}</Text> */}
+            {/* <View style={{alignSelf:'center'}}> */}
+              <Text style={styles.box}>
+                Total: Php {totalSpending}.00
+              </Text>
+            {/* </View> */}
+
 
         </View>
     </>
@@ -185,5 +197,31 @@ const styles = StyleSheet.create({
         width: screenWidth - 60,
         alignItems: 'center',
       },
+      box: {
+        fontWeight: 'bold',
+        color: 'white',
+        fontSize:20,
+        width: '90%',
+        height: 50,
+        backgroundColor: '#4CAF50',
+        // justifyContent: 'center',
+        // alignItems: 'center',
+        // alignContent: 'center',
+
+        padding: 10,
+        marginVertical: 10,
+        borderWidth: 1,
+        borderColor: '#dddddd',
+        borderRadius: 10,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 4,
+        elevation: 2,
+        marginLeft: 20,
+        marginBottom:20,
+        marginRight:20,
+        
+    },
       
 })

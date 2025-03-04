@@ -12,6 +12,8 @@ import Toast from 'react-native-root-toast';
 
 import { Ionicons } from '@expo/vector-icons'; // For camera icon
 
+import GenerateReport from '../component/Report';
+
 const screenWidth = Dimensions.get('window').width;
 export default function SearchScreen(){
     const dbcontextStore = useContext(DBContextStore);
@@ -24,6 +26,9 @@ export default function SearchScreen(){
     const [ modalVisible, setModalVisible ] = useState(false);
     const [ selectedImage, setSelectedImage ] = useState(null);
     const [refreshing,setRefreshing] = useState(false);
+
+    //report generation
+    const [modalVisibleReport, setModalVisibleReport] = useState(false);
 
     
 
@@ -94,13 +99,22 @@ export default function SearchScreen(){
         });
     }
 
+    const handleGenerateReport = () => {
+      console.log('handleGenerateReport ' + JSON.stringify(newList));
+      setModalVisibleReport(true);
+    }
+
 
     return(
+
+
+
         <LinearGradient
           colors={['#0288D1', '#FFFDE4']}
           style={styles.gradient}
         >
         <View>
+        {/* <GenerateReport report={newList}/> */}
             {/* <Searchbar
             style={{marginTop:10, marginBottom:20}}
             placeholder="Search"
@@ -116,8 +130,18 @@ export default function SearchScreen(){
                         value={searchQuery}
                         onChangeText={setSearchQuery}
                         placeholder="Enter a value"
-                        style={{ backgroundColor:'#DDDDDD', width:'95%',height:45, margin:10, borderRadius:5, paddingLeft:10 }}
+                        style={{ backgroundColor:'#DDDDDD', width:'80%',height:45, margin:10, borderRadius:5, paddingLeft:10 }}
                     />
+                    <TouchableOpacity
+                      onPress={()=>handleGenerateReport()}
+                      style={{marginTop:10}}
+                    >
+                      {/* {modalVisibleReport && <GenerateReport/>} */}
+                      {/* {modalVisibleReport && <Text>Close</Text>} */}
+
+                      <Ionicons name="reader-outline" size={40} color="black" />
+                    </TouchableOpacity>
+
                     {/* <Pressable
                         onPress={handleSearchEvent}           
                         style={styles.button}         
@@ -237,7 +261,7 @@ const styles = StyleSheet.create({
         paddingVertical:5,
         borderBottomColor:AppStyle.gunMetal,
         borderBottomWidth:2,
-        // flexDirection:'row',
+        flexDirection:'row',
     },
     button:{        
         alignItems: 'center',

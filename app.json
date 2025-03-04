@@ -4,11 +4,11 @@
     "slug": "expense_tracker_app",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/logo/icon.jpg",
+    "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "splash": {
-      "image": "./assets/logo/logo.jpg",
+      "image": "./assets/splash-icon.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -17,21 +17,23 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/logo/logo.jpg",
+        "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.mfl3genai.expense_tracker_app"
+      "package": "com.mfl3genai.expense_tracker_app",
+      "googleServicesFile": "./google-services.json"
     },
     "web": {
-      "favicon": "./assets/logo/icon.jpg"
+      "favicon": "./assets/favicon.png"
     },
     "plugins": [
       "expo-sqlite"
     ],
     "extra": {
       "eas": {
-        "projectId": "5dac1ecb-c12e-4ba3-b5a2-ce09d2d7c4f0"
+        "projectId": "36ac1157-d6f7-493f-9a85-ed44cf579e6f"
       }
-    }
+    },
+    "owner": "mfl3genai"
   }
 }

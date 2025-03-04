@@ -408,8 +408,8 @@ progress: { fontSize: 16, color: '#FF5252', marginBottom: 10 },
   },
   modalClose: {
     position: 'absolute',
-    top: 150,
-    right: 20,
+    top: 100,
+    right: 25,
   },
   fullImage: {
     width: screenWidth * 0.9,

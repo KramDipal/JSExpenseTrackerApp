@@ -7,22 +7,32 @@ import FilterScreen from './screens/FilterScreen';
 import ChartsScreen from './screens/ChartsScreen';
 import SearchScreen from './screens/SearchScreen';
 
+import GenerateReport from './component/Report';
+
 import { Ionicons } from '@expo/vector-icons'
 // import { LinearGradient } from 'expo-linear-gradient';
 
 import { StyleSheet, Image, TouchableOpacity, Alert } from 'react-native';
 
 import DBcreateContextProvider from './dbContext';
+// import PushNotificationContextStore from './pushNotifContext';
 
 // import InitDB from './database/initDB';
 import miExpenseIcon from './assets/logo/icon.jpg';
+
+import registerNNPushToken from 'native-notify';
+
+
 const Tab = createBottomTabNavigator();
 
 export default function App() {
   const [expenses, setExpenses] = useState([]); // Central state for expenses
 
+  // for push notifications with notify native
+  registerNNPushToken(27985, 'DGFMBJaXPBXNfoDbxfEBOj'); 
   return (
     // <InitDB>
+    // <PushNotificationContextStore>
     <DBcreateContextProvider>
     <NavigationContainer>
       <Tab.Navigator>
@@ -50,8 +60,6 @@ export default function App() {
                         },
                         {
                           text: 'Yes',
-                          // onPress: () => handledeleteRecord(id),
-                          
                         },
 
                       ],
@@ -111,9 +119,18 @@ export default function App() {
           {() => <SearchScreen expenses={expenses} />}
         </Tab.Screen>
 
+        {/* <Tab.Screen name="Report"
+                options={{
+                  tabBarIcon: ({color,size})=> (
+                  <Ionicons name="reader-outline" color={color} size={size}/>
+                )}}>
+          {() => <GenerateReport/>}
+        </Tab.Screen> */}
+
       </Tab.Navigator>
     </NavigationContainer>   
     </DBcreateContextProvider>
+    // </PushNotificationContextStore>
    
     // </InitDB>
   );

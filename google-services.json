@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "306290500136",
+    "project_id": "jsmiexpenseapp",
+    "storage_bucket": "jsmiexpenseapp.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:306290500136:android:365fdc81c50e9172610b1d",
+        "android_client_info": {
+          "package_name": "com.mfl3genai.expense_tracker_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyADMr7F-hv6fQKiWTQLP5kyt38yD79xwTU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

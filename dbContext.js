@@ -75,7 +75,7 @@ export default function DBcreateContextProvider(props){
 
                 setNewExpenses(result); // Update state with fetched data
                 
-                console.log('fetchTasks result ' + JSON.stringify(result));
+                // console.log('fetchTasks result ' + JSON.stringify(result));
 
                 } catch (error) {
                 console.error('Error fetching tasks:', error);
@@ -108,7 +108,7 @@ export default function DBcreateContextProvider(props){
                 try {
                   const result = await database.getFirstAsync('SELECT amount FROM BudgetT');
                   setBudgetGoal(result ? result.amount : null); // Set null if no budget yet
-                  console.log('fetchBudget result ' + JSON.stringify(result));
+                //   console.log('fetchBudget result ' + JSON.stringify(result));
                 } catch (error) {
                   console.error('Error fetching budget:', error);
                 }
