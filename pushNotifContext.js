@@ -1,5 +1,6 @@
 
-import { useEffect, useContext } from "react";
+import React, { useEffect, useContext, createContext} from "react";
+import { Platform } from "react-native";
 import * as Notifications from 'expo-notifications';
 
 // Set notification handler (optional, for foreground behavior)
@@ -13,7 +14,7 @@ Notifications.setNotificationHandler({
 
 export const PushNotificationContextStore = createContext();
 export default function PushNotification(props){
-    
+
  async function registerForPushNotificationsAsync() {
     try {
       // Request permission for notifications

@@ -15,7 +15,7 @@ import { Ionicons } from '@expo/vector-icons'
 import { StyleSheet, Image, TouchableOpacity, Alert } from 'react-native';
 
 import DBcreateContextProvider from './dbContext';
-// import PushNotificationContextStore from './pushNotifContext';
+import PushNotificationContextStore from './pushNotifContext';
 
 // import InitDB from './database/initDB';
 import miExpenseIcon from './assets/logo/icon.jpg';
@@ -29,10 +29,10 @@ export default function App() {
   const [expenses, setExpenses] = useState([]); // Central state for expenses
 
   // for push notifications with notify native
-  registerNNPushToken(27985, 'DGFMBJaXPBXNfoDbxfEBOj'); 
+  // registerNNPushToken(27985, 'DGFMBJaXPBXNfoDbxfEBOj'); 
   return (
     // <InitDB>
-    // <PushNotificationContextStore>
+    <PushNotificationContextStore>
     <DBcreateContextProvider>
     <NavigationContainer>
       <Tab.Navigator>
@@ -130,7 +130,7 @@ export default function App() {
       </Tab.Navigator>
     </NavigationContainer>   
     </DBcreateContextProvider>
-    // </PushNotificationContextStore>
+    </PushNotificationContextStore>
    
     // </InitDB>
   );

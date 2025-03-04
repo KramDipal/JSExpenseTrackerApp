@@ -157,6 +157,21 @@ export default function DBcreateContextProvider(props){
                 }
             }
 
+            const deleteAllRecords = async () =>{
+                console.log('deleteAllRecords!!!');
+
+                if (!db) return;
+                try {
+                    await db.runAsync('DELETE FROM ExpenseT');
+                    console.log('Record All deleted');
+                    fetchTasks();
+                    setBudgetGoal(null);
+                } catch (error) {
+                    console.error('Error deleting record:', error);
+                }
+            }
+
+
     return(
         <DBContextStore.Provider value={{
             db,
@@ -168,6 +183,7 @@ export default function DBcreateContextProvider(props){
             fetchByRecord,
             handleSaveBudget,
             deleteRecord,
+            deleteAllRecords,
             // setupDatabase,
         }}>
             {props.children}

@@ -23,7 +23,7 @@ export default function DashboardScreen({ expenses }) {
   const videoRef = useRef(null);
 //   const totalSpending = expenses.reduce((sum, exp) => sum + exp.amount, 0);
   const dbcontextStore = useContext(DBContextStore);
-  const  { newExpenses, budgetGoal, handleSaveBudget }  = useContext(DBContextStore);
+  const  { newExpenses, budgetGoal, handleSaveBudget, db }  = useContext(DBContextStore);
   const [budgetInput, setBudgetInput] = useState('');
   const scrollViewRef = useRef(null);
 
@@ -109,6 +109,27 @@ export default function DashboardScreen({ expenses }) {
     }
   };
 
+  const deleteAllRecord = () => {
+
+    // console.log('deleteAllRecord');
+    Alert.alert(
+      'Delete All Records',
+      'Are you sure you want to delete all records?',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'Delete',
+          onPress: () => {
+            dbcontextStore.deleteAllRecords();
+          },
+        },
+      ],
+    );
+  }
+
   // const handleImagePress = (photo) => {
   //   // Alert.alert('Image Pressed', `You clicked on image #${index + 1}`);
   //   // Alert.alert('Image Pressed ' + index + photo);
@@ -175,6 +196,15 @@ export default function DashboardScreen({ expenses }) {
           </TouchableOpacity>
 
         </View> */}
+        <>
+        <TouchableOpacity
+            onPress={deleteAllRecord}
+            style={{position:'absolute', right: 20, top: 20}}
+          >
+            <Ionicons name="trash-outline" size={30} color="white" />
+          </TouchableOpacity>
+        
+        </>
 
       <View style={styles.container}>
 
@@ -192,6 +222,7 @@ export default function DashboardScreen({ expenses }) {
         ) : (
           <Text style={styles.noBudget}>No budget set</Text>
         )}
+
 
         <View style={styles.budgetInputContainer}>  
           <TextInput
