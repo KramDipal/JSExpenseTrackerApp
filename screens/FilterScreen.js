@@ -3,36 +3,39 @@ import { View, Text, FlatList, Button, StyleSheet } from 'react-native';
 import { DBContextStore } from '../dbContext';
 import { LinearGradient } from 'expo-linear-gradient';
 
+import { FilterStyleUtil } from '../utils/filterStyleUtil';
+
 export default function FilterScreen({ expenses }) {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [timeFilter, setTimeFilter] = useState('Monthly');
   const  { newExpenses }  = useContext(DBContextStore);
 
 
-  const categories = [...new Set(newExpenses.map((exp) => exp.category))]; // Unique categories
+  const categories = newExpenses ? [...new Set(newExpenses.map((exp) => exp.category))]
+  : null; // Unique categories
 
 
   return (
     <LinearGradient
     colors={['#0288D1', '#FFFDE4']}
-    style={styles.gradient}
+    style={FilterStyleUtil.gradient}
     >
 
-    <View style={styles.container}>
-      <Text style={styles.header}>Filter by Category</Text>
+    <View style={FilterStyleUtil.container}>
+      <Text style={FilterStyleUtil.header}>Filter by Category</Text>
       <FlatList
         data={categories}
         keyExtractor={(item) => item}
         renderItem={({ item }) => (
           <Text
-            style={[styles.item, selectedCategory === item && styles.selected]}
+            style={[FilterStyleUtil.item, selectedCategory === item && FilterStyleUtil.selected]}
             onPress={() => setSelectedCategory(item)}
           >
             {item}
           </Text>
         )}
       />
-      <Text style={styles.header}>Time Filter</Text>
+      <Text style={FilterStyleUtil.header}>Time Filter</Text>
       <Button
         title="Weekly"
         onPress={() => setTimeFilter('Weekly')}
@@ -48,10 +51,10 @@ export default function FilterScreen({ expenses }) {
   );
 }
 
-const styles = StyleSheet.create({
-  gradient: { flex: 1 },
-  container: { flex: 1, padding: 20, marginBottom:20 },
-  header: { fontSize: 18, marginVertical: 10 },
-  item: { padding: 10, borderBottomWidth: 1 },
-  selected: { backgroundColor: '#e0e0e0' },
-});
+// const styles = StyleSheet.create({
+//   gradient: { flex: 1 },
+//   container: { flex: 1, padding: 20, marginBottom:20 },
+//   header: { fontSize: 18, marginVertical: 10 },
+//   item: { padding: 10, borderBottomWidth: 1 },
+//   selected: { backgroundColor: '#e0e0e0' },
+// });

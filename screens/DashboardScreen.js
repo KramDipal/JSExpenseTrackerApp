@@ -17,6 +17,8 @@ import { Ionicons } from '@expo/vector-icons'; // For camera icon
 
 import { Video } from 'expo-av';
 
+import { DashStyleUtil } from '../utils/DashstyleUtil';
+
 const screenWidth = Dimensions.get('window').width;
 export default function DashboardScreen({ expenses }) {
 
@@ -27,10 +29,18 @@ export default function DashboardScreen({ expenses }) {
   const [budgetInput, setBudgetInput] = useState('');
   const scrollViewRef = useRef(null);
 
+
+
+
+
   // console.log('DashboardScreen newExpenses ' + JSON.stringify(newExpenses));
   // Calculate total from newExpenses instead of props.expenses
-  const totalSpending = newExpenses.reduce((sum, exp) => sum + parseFloat(exp.amount), 0);
+  const totalSpending = newExpenses ? newExpenses.reduce((sum, exp) => sum + parseFloat(exp.amount), 0) : 0.00;
+
   const budgetProgress = budgetGoal ? (totalSpending / budgetGoal) * 100 : 0;
+
+
+  // console.log('newExpenses result ' + JSON.stringify(totalSpending));
 
   //image blow up
   const [ modalVisible, setModalVisible ] = useState(false);
@@ -109,26 +119,26 @@ export default function DashboardScreen({ expenses }) {
     }
   };
 
-  const deleteAllRecord = () => {
+  // const deleteAllRecord = () => {
 
-    // console.log('deleteAllRecord');
-    Alert.alert(
-      'Delete All Records',
-      'Are you sure you want to delete all records?',
-      [
-        {
-          text: 'Cancel',
-          style: 'cancel',
-        },
-        {
-          text: 'Delete',
-          onPress: () => {
-            dbcontextStore.deleteAllRecords();
-          },
-        },
-      ],
-    );
-  }
+  //   // console.log('deleteAllRecord');
+  //   Alert.alert(
+  //     'Delete All Records',
+  //     'Are you sure you want to delete all records?',
+  //     [
+  //       {
+  //         text: 'Cancel',
+  //         style: 'cancel',
+  //       },
+  //       {
+  //         text: 'Delete',
+  //         onPress: () => {
+  //           dbcontextStore.deleteAllRecords();
+  //         },
+  //       },
+  //     ],
+  //   );
+  // }
 
   // const handleImagePress = (photo) => {
   //   // Alert.alert('Image Pressed', `You clicked on image #${index + 1}`);
@@ -181,12 +191,12 @@ export default function DashboardScreen({ expenses }) {
   // const handleAboutPress = () => {
   //   setModalVisibleAbout(true);
   // }
-
+  // console.log('DashboardScreen');
   return (
     <LinearGradient 
       // colors={['#0288D1', '#4FC3F7']} 
       colors={['#0288D1', '#FFFDE4']}
-      style={styles.gradient}>
+      style={DashStyleUtil.gradient}>
 
         {/* <View style={{marginTop:15, marginBottom:20, position:'absolute', right: 20,}}>
           <TouchableOpacity
@@ -196,7 +206,7 @@ export default function DashboardScreen({ expenses }) {
           </TouchableOpacity>
 
         </View> */}
-        <>
+        {/* <>
         <TouchableOpacity
             onPress={deleteAllRecord}
             style={{position:'absolute', right: 20, top: 20}}
@@ -204,29 +214,27 @@ export default function DashboardScreen({ expenses }) {
             <Ionicons name="trash-outline" size={30} color="white" />
           </TouchableOpacity>
         
-        </>
+        </> */}
 
-      <View style={styles.container}>
-
-
-        <Text style={styles.total}>Total Spending: Php {totalSpending.toFixed(2)}</Text>
+      <View style={DashStyleUtil.container}>
+        <Text style={DashStyleUtil.total}>Total Spending: Php {totalSpending.toFixed(2)}</Text>
         {budgetGoal ? (
           <>
-            <Text style={styles.budget}>Budget Goal: Php {budgetGoal.toFixed(2)}</Text>
-            <Text style={styles.progress}>
+            <Text style={DashStyleUtil.budget}>Budget Goal: Php {budgetGoal.toFixed(2)}</Text>
+            <Text style={DashStyleUtil.progress}>
               Progress: {budgetProgress.toFixed(1)}% (
               {totalSpending > budgetGoal ? 'Over' : 'Under'})
             </Text>
           </>
           
         ) : (
-          <Text style={styles.noBudget}>No budget set</Text>
+          <Text style={DashStyleUtil.noBudget}>No budget set</Text>
         )}
 
 
-        <View style={styles.budgetInputContainer}>  
+        <View style={DashStyleUtil.budgetInputContainer}>  
           <TextInput
-            style={styles.budgetInput}
+            style={DashStyleUtil.budgetInput}
             placeholder="Set Budget Goal (Php)"
             keyboardType="numeric"
             value={budgetInput}
@@ -296,7 +304,7 @@ export default function DashboardScreen({ expenses }) {
               >
                 <Image
                   source={articles}
-                  style={styles.imageArticles}
+                  style={DashStyleUtil.imageArticles}
                 />
               </TouchableOpacity>
             ))}
@@ -315,12 +323,12 @@ export default function DashboardScreen({ expenses }) {
         {/* </View> */}
 
 
-            {/* Insurance Image*/}
+        {/* Insurance Auto Scroll Images START*/}
         <ScrollView
             ref={scrollViewRef}
             horizontal
             showsHorizontalScrollIndicator={false}
-            contentContainerStyle={styles.scrollContainer}
+            contentContainerStyle={DashStyleUtil.scrollContainer}
           >
 
             {images.map((image, index) => (
@@ -331,26 +339,41 @@ export default function DashboardScreen({ expenses }) {
               >
                 <Image
                   source={image}
-                  style={[styles.image, { width: imageWidth }]}
+                  style={[DashStyleUtil.image, { width: imageWidth }]}
                 />
               </TouchableOpacity>
             ))}
           </ScrollView>
-        {/* Insurance */}
+          
+          {/* Dot indicator START */}
+          <View style={DashStyleUtil.dotsContainer}>
+              {images.map((_, index) => (
+                <View
+                  key={index}
+                  style={[
+                    DashStyleUtil.dot,
+                    { backgroundColor: index === currentIndex ? '#ffca2b' : '#ccc' },
+                  ]}
+                />
+              ))}
+          </View>
+
+        {/* Dot indicator END */}
+        {/* Insurance Auto Scroll Images END*/}
 
 
         {/* insurance modal */}
         <Modal visible={modalVisible} transparent onRequestClose={() => setModalVisible(false)}>
-          <View style={styles.modalOverlay}>
-            <TouchableOpacity onPress={() => setModalVisible(false)} style={styles.modalClose}>
-              <Text style={styles.closeText}>Close</Text>
+          <View style={DashStyleUtil.modalOverlay}>
+            <TouchableOpacity onPress={() => setModalVisible(false)} style={DashStyleUtil.modalClose}>
+              <Text style={DashStyleUtil.closeText}>Close</Text>
             </TouchableOpacity>            
             {/* <Image source={selectedImage} style={styles.fullImage} /> */}
             {videoMap.length >=  imagePressedIndex ? 
               <Video
                     ref={videoRef}
                     source={videoMap[imagePressedIndex]}
-                    style={styles.video}
+                    style={DashStyleUtil.video}
                     useNativeControls={true}
                     shouldPlay
                     isLooping={true}
@@ -365,11 +388,11 @@ export default function DashboardScreen({ expenses }) {
 
         {/* Articles modal */}
         <Modal visible={modalVisibleArticles} transparent onRequestClose={() => setModalVisibleArticles(false)}>
-          <View style={styles.modalOverlay}>
-            <TouchableOpacity onPress={() => setModalVisibleArticles(false)} style={styles.modalClose}>
-              <Text style={styles.closeText}>Close</Text>
+          <View style={DashStyleUtil.modalOverlay}>
+            <TouchableOpacity onPress={() => setModalVisibleArticles(false)} style={DashStyleUtil.modalClose}>
+              <Text style={DashStyleUtil.closeText}>Close</Text>
             </TouchableOpacity>            
-            <Image source={selectedImageArticles} style={styles.fullImage} />
+            <Image source={selectedImageArticles} style={DashStyleUtil.fullImage} />
           </View>
         </Modal>
         {/* Articles modal */}
@@ -406,144 +429,157 @@ export default function DashboardScreen({ expenses }) {
 }
 
 const styles = StyleSheet.create({
-gradient: { flex: 1,},
-  container: { flex: 1, padding: 20, marginTop:20 },
-  total: { fontSize: 24, fontWeight: 'bold', marginBottom: 20, marginTop: 5 },
-  budget: { fontSize: 18, color: 'blue', marginBottom: 5 },
+// gradient: { flex: 1,},
+  // container: { flex: 1, padding: 20, marginTop:10 },
+  // container: { flex: 1, padding: 20,},
+  // total: { fontSize: 24, fontWeight: 'bold', marginBottom: 20, marginTop: 5 },
+  // budget: { fontSize: 18, color: 'blue', marginBottom: 5 },
 //   progress: { fontSize: 16, color: budgetProgress > 100 ? '#FF5252' : '#fff', marginBottom: 10 },
-progress: { fontSize: 16, color: '#FF5252', marginBottom: 10 },
-  noBudget: { fontSize: 16, color: '#fff', marginBottom: 10 },
-  budgetInputContainer: { 
-    flexDirection: 'row', 
-    alignItems: 'center', 
-    marginBottom: 20,
-    // borderRadius: 2,
-    // flex:1,
-  },
-  budgetInput: {
-    flex: 1,
-    borderWidth: 1,
-    padding: 10,
-    marginRight: 10,
-    borderRadius: 5,
-    // backgroundColor: 'rgba(255, 255, 255, 0.9)',
-    color: 'black',
-    fontSize: 18,
-  },
-  header: { fontSize: 25, marginBottom: 10, color: '#FF5252' },
-  modalOverlay: {
-    flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.8)',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  modalClose: {
-    position: 'absolute',
-    top: 100,
-    right: 25,
-  },
-  fullImage: {
-    width: screenWidth * 0.9,
-    height: screenWidth * 0.9 * (100 / 100), // Maintain aspect ratio
-    borderRadius: 10,
-  },
-  closeText: {
-    color: '#fff',
-    fontSize: 18,
-  },
-  buttonChart: {
-    position: 'absolute',
-    // top: 10,
-    right: 20,
-    fontSize: 18,
-    fontWeight:'bold',
-    marginTop: 10,
-    color:'red'    
-  },
-  dashboard: {
-    marginTop: 20,
-    padding: 10,
-    backgroundColor: '#f0f0f0',
-    borderRadius: 8,
-    width: screenWidth - 40,
-  },
-  dashboardTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 10,
-    textAlign: 'center',
-  },
-  dashboardItem: {
-    fontSize: 16,
-    marginVertical: 5,
-  },
-  modalView: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-  },
-  modalContent: {
-    backgroundColor: 'white',
-    padding: 20,
-    borderRadius: 10,
-    width: screenWidth - 60,
-    alignItems: 'center',
-  },
-  modalTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 15,
-  },
-  modalItem: {
-    fontSize: 16,
-    marginVertical: 5,
-  },    
-  flatListStyle: {
-    // height: 50,
-    borderWidth: 2,
-    borderColor: 'gray',
-    borderRadius: 10,
-    // marginVertical: 10,
-    // backgroundColor: '#97B5DE',
-    shadowColor: '#e1bb3e',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-    elevation: 10,    
-  },
-  image: {
-    height: 90,
-    marginHorizontal: 5,
-    borderRadius: 10,
-  },
-  scrollContainer: {
-    alignItems: 'center',
-    marginBottom: 70,
-    marginTop:60
-    // backgroundColor:'#ff2800',
-  },
-  imageArticles: {
-    height: 60,
-    width:60,
-    marginHorizontal: 10,
-    borderRadius: 10,
-    marginBottom: 65
-  },
-  video: {
-    width: 400, // Full width minus padding
-    height: 320, // 16:9 aspect ratio
-    borderRadius: 10,
-    // marginLeft:170
+// progress: { fontSize: 16, color: '#FF5252', marginBottom: 10 },
+  // noBudget: { fontSize: 16, color: '#fff', marginBottom: 10 },
+  // budgetInputContainer: { 
+  //   flexDirection: 'row', 
+  //   alignItems: 'center', 
+  //   marginBottom: 20,
+  //   // borderRadius: 2,
+  //   // flex:1,
+  // },
+  // budgetInput: {
+  //   flex: 1,
+  //   borderWidth: 1,
+  //   padding: 10,
+  //   marginRight: 10,
+  //   borderRadius: 5,
+  //   // backgroundColor: 'rgba(255, 255, 255, 0.9)',
+  //   color: 'black',
+  //   fontSize: 18,
+  // },
+  // header: { fontSize: 25, marginBottom: 10, color: '#FF5252' },
+  // modalOverlay: {
+  //   flex: 1,
+  //   backgroundColor: 'rgba(0, 0, 0, 0.8)',
+  //   justifyContent: 'center',
+  //   alignItems: 'center',
+  // },
+  // modalClose: {
+  //   position: 'absolute',
+  //   top: 100,
+  //   right: 25,
+  // },
+  // fullImage: {
+  //   width: screenWidth * 0.9,
+  //   height: screenWidth * 0.9 * (100 / 100), // Maintain aspect ratio
+  //   borderRadius: 10,
+  // },
+  // closeText: {
+  //   color: '#fff',
+  //   fontSize: 18,
+  // },
+  // buttonChart: {
+  //   position: 'absolute',
+  //   // top: 10,
+  //   right: 20,
+  //   fontSize: 18,
+  //   fontWeight:'bold',
+  //   marginTop: 10,
+  //   color:'red'    
+  // },
+  // dashboard: {
+  //   marginTop: 20,
+  //   padding: 10,
+  //   backgroundColor: '#f0f0f0',
+  //   borderRadius: 8,
+  //   width: screenWidth - 40,
+  // },
+  // dashboardTitle: {
+  //   fontSize: 18,
+  //   fontWeight: 'bold',
+  //   marginBottom: 10,
+  //   textAlign: 'center',
+  // },
+  // dashboardItem: {
+  //   fontSize: 16,
+  //   marginVertical: 5,
+  // },
+  // modalView: {
+  //   flex: 1,
+  //   justifyContent: 'center',
+  //   alignItems: 'center',
+  //   backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  // },
+  // modalContent: {
+  //   backgroundColor: 'white',
+  //   padding: 20,
+  //   borderRadius: 10,
+  //   width: screenWidth - 60,
+  //   alignItems: 'center',
+  // },
+  // modalTitle: {
+  //   fontSize: 20,
+  //   fontWeight: 'bold',
+  //   marginBottom: 15,
+  // },
+  // modalItem: {
+  //   fontSize: 16,
+  //   marginVertical: 5,
+  // },    
+  // flatListStyle: {
+  //   // height: 50,
+  //   borderWidth: 2,
+  //   borderColor: 'gray',
+  //   borderRadius: 10,
+  //   // marginVertical: 10,
+  //   // backgroundColor: '#97B5DE',
+  //   shadowColor: '#e1bb3e',
+  //   shadowOffset: { width: 0, height: 2 },
+  //   shadowOpacity: 0.2,
+  //   shadowRadius: 4,
+  //   elevation: 10,    
+  // },
+  // image: {
+  //   height: 90,
+  //   marginHorizontal: 5,
+  //   borderRadius: 10,
+  // },
+  // scrollContainer: {
+  //   alignItems: 'center',
+  //   marginBottom: 70,
+  //   marginTop:60
+  //   // backgroundColor:'#ff2800',
+  // },
+  // imageArticles: {
+  //   height: 60,
+  //   width:60,
+  //   marginHorizontal: 10,
+  //   borderRadius: 10,
+  //   marginBottom: 65
+  // },
+  // // video: {
+  // //   width: 400, // Full width minus padding
+  // //   height: 320, // 16:9 aspect ratio
+  // //   borderRadius: 10,
+  // //   // marginLeft:170
 
-  },
-  viewView:{
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginVertical: 10, // Number, not string
-  },
-  aboutStyle:{
-    // marginVertical: 10, // Number, not string
-  }
+  // // },
+  // viewView:{
+  //   justifyContent: 'center',
+  //   alignItems: 'center',
+  //   marginVertical: 10, // Number, not string
+  // },
+  // aboutStyle:{
+  //   // marginVertical: 10, // Number, not string
+  // },
+  // // dotsContainer: {
+  // //   flexDirection: 'row',
+  // //   justifyContent: 'center',
+  // //   marginTop: 10,
+  // // },
+  // dot: {
+  //   width: 12,
+  //   height: 12,
+  //   borderRadius: 5,
+  //   marginHorizontal: 5,
+  //   marginBottom: 10
+  // },
 
 });

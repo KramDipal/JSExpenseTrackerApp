@@ -68,7 +68,7 @@ export default function DBcreateContextProvider(props){
             const fetchTasks = async (database = db) => {
                 if (!database) return;
 
-                console.log('fetchTasks database ' + JSON.stringify(database));
+                // console.log('fetchTasks database ' + JSON.stringify(database));
                 try {
                 const result = await database.getAllAsync('SELECT * FROM ExpenseT');
 
@@ -140,6 +140,8 @@ export default function DBcreateContextProvider(props){
                 await db.runAsync('INSERT INTO BudgetT (amount) VALUES (?)', [parseFloat(budgetAmount)]);
                 console.log('Budget Saved');
                 fetchBudget();
+                setBudgetGoal(null);
+                setNewExpenses(null);
                 } catch (error) {
                 console.error('Error saving budget:', error);
                 }
@@ -157,19 +159,19 @@ export default function DBcreateContextProvider(props){
                 }
             }
 
-            const deleteAllRecords = async () =>{
-                console.log('deleteAllRecords!!!');
+            // const deleteAllRecords = async () =>{
+            //     console.log('deleteAllRecords!!!');
 
-                if (!db) return;
-                try {
-                    await db.runAsync('DELETE FROM ExpenseT');
-                    console.log('Record All deleted');
-                    fetchTasks();
-                    setBudgetGoal(null);
-                } catch (error) {
-                    console.error('Error deleting record:', error);
-                }
-            }
+            //     if (!db) return;
+            //     try {
+            //         await db.runAsync('DELETE FROM ExpenseT');
+            //         console.log('Record All deleted');
+            //         fetchTasks();
+            //         setBudgetGoal(null);
+            //     } catch (error) {
+            //         console.error('Error deleting record:', error);
+            //     }
+            // }
 
 
     return(
@@ -183,7 +185,7 @@ export default function DBcreateContextProvider(props){
             fetchByRecord,
             handleSaveBudget,
             deleteRecord,
-            deleteAllRecords,
+            // deleteAllRecords,
             // setupDatabase,
         }}>
             {props.children}

@@ -9,6 +9,8 @@ import {
 
   import { Ionicons } from '@expo/vector-icons'; // For camera icon
 import { LinearGradient } from "expo-linear-gradient";
+
+import { ChartStyleUtil } from "../utils/chartstyleUtil";
 const screenWidth = Dimensions.get('window').width;
 export default function ChartsScreen(){
   const dbcontextStore = useContext(DBContextStore);
@@ -60,12 +62,12 @@ const formattedTotals = Object.entries(categoryTotals).map(([category, total]) =
     return(        
     <LinearGradient
     colors={['#0288D1', '#FFFDE4']} // Green gradient for Add Expense
-    style={styles.gradient}
+    style={ChartStyleUtil.gradient}
     >  
     <>
-        <View style={styles.modalView}>
-          <View style={styles.modalContent}>
-            <Text style={styles.modalTitle}>Expense Breakdown</Text>
+        <View style={ChartStyleUtil.modalView}>
+          <View style={ChartStyleUtil.modalContent}>
+            <Text style={{fontWeight:'bold'}}>Expense Breakdown</Text>
             {pieData.length > 0 ? (
               <PieChart
                 data={pieData}
@@ -103,7 +105,7 @@ const formattedTotals = Object.entries(categoryTotals).map(([category, total]) =
 
         </View> */}
         
-        <View style={styles.modalViewBar}>
+        <View>
             <View style={{flexDirection:'row', }}>
             <Text style={{color:'blue', fontSize:20, marginBottom:20, marginLeft:30}}>Category:</Text>
                 {/* <Text style={{color:'blue', fontSize:20, marginBottom:20, position: 'absolute', left:300}}>Total:</Text> */}
@@ -142,7 +144,7 @@ const formattedTotals = Object.entries(categoryTotals).map(([category, total]) =
             {/* Total */}
             {/* <Text>{totalSpending}</Text> */}
             {/* <View style={{alignSelf:'center'}}> */}
-              <Text style={styles.box}>
+              <Text style={ChartStyleUtil.box}>
                 Total: Php {totalSpending}.00
               </Text>
             {/* </View> */}
@@ -167,61 +169,61 @@ const chartConfig = {
     useShadowColorFromDataset: false, // optional
   };
 
-const styles = StyleSheet.create({
-    gradient: { flex: 1, borderRadius: 10,},
-    modalView: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        // backgroundColor: 'rgba(0, 0, 0, 0.5)',
-      },
-      modalContent: {
-        backgroundColor: 'white',
-        padding: 20,
-        borderRadius: 10,
-        width: screenWidth - 60,
-        alignItems: 'center',
-      },
-      modalViewBar: {
-        // flex: 1,
-        // margin:20,
-        // justifyContent: 'center',
-        // alignItems: 'center',
-        // backgroundColor: 'rgba(0, 0, 0, 0.5)',
-        // marginBottom: 10,
-      },
-      modalContentBar: {
-        // backgroundColor: 'white',
-        padding: 20,
-        borderRadius: 10,
-        width: screenWidth - 60,
-        alignItems: 'center',
-      },
-      box: {
-        fontWeight: 'bold',
-        color: 'white',
-        fontSize:20,
-        width: '90%',
-        height: 50,
-        backgroundColor: '#4CAF50',
-        // justifyContent: 'center',
-        // alignItems: 'center',
-        // alignContent: 'center',
+// const styles = StyleSheet.create({
+//     gradient: { flex: 1, borderRadius: 10,},
+//     modalView: {
+//         flex: 1,
+//         justifyContent: 'center',
+//         alignItems: 'center',
+//         // backgroundColor: 'rgba(0, 0, 0, 0.5)',
+//       },
+//       modalContent: {
+//         backgroundColor: 'white',
+//         padding: 20,
+//         borderRadius: 10,
+//         width: screenWidth - 60,
+//         alignItems: 'center',
+//       },
+//       modalViewBar: {
+//         // flex: 1,
+//         // margin:20,
+//         // justifyContent: 'center',
+//         // alignItems: 'center',
+//         // backgroundColor: 'rgba(0, 0, 0, 0.5)',
+//         // marginBottom: 10,
+//       },
+//       modalContentBar: {
+//         // backgroundColor: 'white',
+//         padding: 20,
+//         borderRadius: 10,
+//         width: screenWidth - 60,
+//         alignItems: 'center',
+//       },
+//       box: {
+//         fontWeight: 'bold',
+//         color: 'white',
+//         fontSize:20,
+//         width: '90%',
+//         height: 50,
+//         backgroundColor: '#4CAF50',
+//         // justifyContent: 'center',
+//         // alignItems: 'center',
+//         // alignContent: 'center',
 
-        padding: 10,
-        marginVertical: 10,
-        borderWidth: 1,
-        borderColor: '#dddddd',
-        borderRadius: 10,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.1,
-        shadowRadius: 4,
-        elevation: 2,
-        marginLeft: 20,
-        marginBottom:20,
-        marginRight:20,
+//         padding: 10,
+//         marginVertical: 10,
+//         borderWidth: 1,
+//         borderColor: '#dddddd',
+//         borderRadius: 10,
+//         shadowColor: '#000',
+//         shadowOffset: { width: 0, height: 2 },
+//         shadowOpacity: 0.1,
+//         shadowRadius: 4,
+//         elevation: 2,
+//         marginLeft: 20,
+//         marginBottom:20,
+//         marginRight:20,
         
-    },
+//     },
       
-})
+// })
