@@ -85,4 +85,11 @@ export const DashStyleUtil = StyleSheet.create({
         marginHorizontal: 5,
         borderRadius: 10,
       },
+      insurer:{
+        alignSelf:'center', 
+        fontSize:20, 
+        fontWeight:'bold', 
+        position: 'absolute', 
+        right:10
+      },
 })

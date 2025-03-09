@@ -65,6 +65,17 @@ export default function DashboardScreen({ expenses }) {
   //   new Array(newExpenses.length).fill(0) // Initialize counts as 0 for each index
   // );
 
+  const [insurer] = useState([
+    '+639171234567', 
+    '+639178874568', 
+    '+639171994569',
+    '+639170934560',
+    '+639171234888', 
+    '+639171277762', 
+    '+639170904563', 
+    '+639176677564'
+    ]);
+
   const [images] = useState([
     require('../assets/insurance/bdoi.png'),
     require('../assets/insurance/sunlife.png'),
@@ -93,8 +104,8 @@ export default function DashboardScreen({ expenses }) {
   useEffect(() => {
     if (!autoScroll) return;
     let index = 0;
-    const totalImages = images.length;
 
+    const totalImages = images.length;
     const scrollInterval = setInterval(() => {
       index = (index + 1) % totalImages;
       const scrollX = index * imageWidth;
@@ -106,6 +117,8 @@ export default function DashboardScreen({ expenses }) {
 
     return () => clearInterval(scrollInterval);
   }, [autoScroll, images, imageWidth]);
+
+  console.log(currentIndex);
 
   
     const saveBudget = () => {
@@ -312,16 +325,17 @@ export default function DashboardScreen({ expenses }) {
    {/* Articles */}
 
 
-        {/* <View style={{flexDirection:'row'}}> */}
-          <Text style={{fontSize:20, fontWeight:'bold',}}>
-            Insurance
-          </Text>
-
-          {/* <View style={styles.viewView}> */}
-
-          {/* </View> */}
-        {/* </View> */}
-
+          {/* Display insurer label upon insurance image change - START */}
+          <View style={{flexDirection:'row'}}>
+            <Text style={{fontSize:20, fontWeight:'bold',}}>
+              Insurance
+            </Text>
+            <Text style={{fontSize:20, fontWeight:'bold', marginLeft:60, color:'red'}}>Hotline:</Text>
+            <Text style={DashStyleUtil.insurer}>
+              {insurer[currentIndex]}
+            </Text>
+          </View>
+          {/* Display insurer label upon insurance image change - END */}
 
         {/* Insurance Auto Scroll Images START*/}
         <ScrollView
@@ -344,6 +358,8 @@ export default function DashboardScreen({ expenses }) {
               </TouchableOpacity>
             ))}
           </ScrollView>
+
+
           
           {/* Dot indicator START */}
           <View style={DashStyleUtil.dotsContainer}>
@@ -357,7 +373,9 @@ export default function DashboardScreen({ expenses }) {
                 />
               ))}
           </View>
+        <View>
 
+        </View>
         {/* Dot indicator END */}
         {/* Insurance Auto Scroll Images END*/}
 
